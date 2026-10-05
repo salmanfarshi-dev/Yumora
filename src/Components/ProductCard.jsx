@@ -3,9 +3,24 @@ import React from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaStar } from "react-icons/fa6";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { CardSlice } from "../Slices/addtocartSlice";
 
 
 function ProductCard({off, thumbnail, title, des, rating, category, price, discountPercentage, className,ondelete, deleteicon}) {
+
+
+let dispatch = useDispatch()
+
+  const handleCard=()=>{
+    dispatch(CardSlice({
+      
+    }))
+
+
+  }
+
+
   return (
     <div className={`w-full md:w-72.5 bg-white border border-border2 rounded-[15px] px-2 md:px-6 py-3 md:py-6 overflow-hidden relative hover:shadow-2xl transition duration-250 ${className}`}>
       {
@@ -59,7 +74,7 @@ function ProductCard({off, thumbnail, title, des, rating, category, price, disco
           </p>
         </div>
 
-        <Button className="bg-primary text-white rounded text-xs md:text-sm font-bold font-lato w-full md:w-fit mt-2 md:mt-0">
+        <Button onClick={handleCard} className="bg-primary text-white rounded text-xs md:text-sm font-bold font-lato w-full md:w-fit mt-2 md:mt-0">
           <AiOutlineShoppingCart className="text-xl"/>
           Add
         </Button>
