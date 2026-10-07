@@ -38,35 +38,33 @@ function App() {
 
   return (
     <Navbar
-    isMenuOpen={isMenuOpen}  
+      isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-    className="py-1 md:py-2 z-60 transition-colors duration-300 shadow "
+      className="py-1 md:py-2 z-60 transition-colors duration-300 shadow "
       classNames={{
         wrapper: "w-full max-w-[1440px] mx-auto  px-4 md:px-8 lg:px-0",
       }}
     >
-      <NavbarContent >
+      <NavbarContent>
         <NavbarMenuToggle
-         
           className="md:hidden"
-            icon={
-    isMenuOpen ? (
-      <HiOutlineXMark className="text-2xl" />
-    ) : (
-      <HiOutlineBars3CenterLeft className="text-2xl" />
-    )
-  }
+          icon={
+            isMenuOpen ? (
+              <HiOutlineXMark className="text-2xl" />
+            ) : (
+              <HiOutlineBars3CenterLeft className="text-2xl" />
+            )
+          }
         />
         <NavbarBrand className="ml-[20%] md:ml-0">
-         <img src="/public/logo (2).png" alt="" className="w-20 md:w-25" />
-
+          <img src="/public/logo (2).png" alt="" className="w-20 md:w-25" />
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden md:flex gap-8" justify="center">
         <NavbarItem>
           <NavLink
-            to="/" 
+            to="/"
             className={({ isActive }) =>
               `md:text-[18px] lg:text-xl font-medium transition ${
                 isActive ? "text-primary" : "text-black"
@@ -99,7 +97,7 @@ function App() {
               }`
             }
           >
-           Products
+            Products
           </NavLink>
         </NavbarItem>
 
@@ -133,7 +131,9 @@ function App() {
       <NavbarContent justify="end">
         <NavbarItem>
           <div className="flex items-center gap-x-2 ">
-            <Button className="bg-primary text-white font-[16px] md:text-[18px] lg:text-xl md:py-6 md:px-6">Contact Us</Button>
+            <Button className="bg-primary text-white font-[16px] md:text-[18px] lg:text-xl md:py-6 md:px-6">
+              Contact Us
+            </Button>
           </div>
         </NavbarItem>
       </NavbarContent>
