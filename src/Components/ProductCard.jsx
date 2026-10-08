@@ -2,11 +2,11 @@ import { Button } from "@heroui/react";
 import React from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaStar } from "react-icons/fa6";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { CardSlice } from "../Slices/addtocartSlice";
 
 function ProductCard({
+  id,
   off,
   thumbnail,
   title,
@@ -22,7 +22,19 @@ function ProductCard({
   let dispatch = useDispatch();
 
   const handleCard = () => {
-    dispatch(CardSlice({}));
+     console.log("id:", id);
+    dispatch(
+      CardSlice({
+        id,
+        thumbnail,
+        title,
+        description: des,
+        rating,
+        category,
+        price,
+        discountPercentage,
+      })
+    );
   };
 
   return (
@@ -45,9 +57,10 @@ function ProductCard({
         <img
           src={thumbnail}
           alt="image"
-          className="w-30 h-30  md:w-50 md:h-50 object-cover"
+          className="w-30 h-30 md:w-50 md:h-50 object-cover"
         />
       </div>
+
       <p className="text-xs font-lato font-normal text-secondary2 mt-2 md:mt-4 line-clamp-1">
         {title}
       </p>
@@ -55,6 +68,7 @@ function ProductCard({
       <h3 className="text-[15px] font-medium md:leading-6 text-cardtittle tracking-[0.48px] overflow-hidden py-2 line-clamp-2 max-h-14">
         {des}
       </h3>
+
       <div className="flex items-center gap-x-2 md:gap-x-5">
         <div className="flex items-center gap-x-1 md:gap-x-2">
           <FaStar className="text-yellow-400" />
@@ -63,17 +77,22 @@ function ProductCard({
           <FaStar className="text-yellow-400" />
           <FaStar className="text-yellow-400" />
         </div>
-        <span className="text-[#B6B6B6] text-sm font-lato">({rating})</span>
+
+        <span className="text-[#B6B6B6] text-sm font-lato">
+          ({rating})
+        </span>
       </div>
+
       <p className="text-sm text-[#B6B6B6] font-lato mt-2 mb-3 md:mb-6">
         By <span className="text-primary">{category}</span>
       </p>
 
-      <div className="flex justify-between flex-col md:flex-row items-start  md:items-center ">
+      <div className="flex justify-between flex-col md:flex-row items-start md:items-center">
         <div className="flex items-center gap-x-3">
           <p className="text-success font-bold text-[15px] md:text-[18px] font-quicksand">
             ${price}
           </p>
+
           <p className="text-secondary2 text-xs font-semibold line-through">
             ${discountPercentage}
           </p>

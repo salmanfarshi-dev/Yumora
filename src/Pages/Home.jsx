@@ -21,7 +21,6 @@ function Home() {
       .then((data) => setData(data.products));
   }, []);
 
-
   return (
     <>
       {/* ============= 
@@ -63,6 +62,7 @@ function Home() {
           <div className="mt-3 md:mt-8 lg:mt-11 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
             {data.slice(0, show).map((item) => (
               <ProductCard
+                id={item.id}
                 off="-25%"
                 thumbnail={item.thumbnail}
                 title={item.title}
@@ -80,10 +80,10 @@ function Home() {
                 onClick={() => {
                   setLoader(true);
 
-                 setTimeout(()=>{
-                   setShow(show + 4);
-                  setLoader(false);
-                 },500)
+                  setTimeout(() => {
+                    setShow(show + 4);
+                    setLoader(false);
+                  }, 500);
                 }}
                 className="bg-primary text-white text-xl font-medium rounded"
               >
@@ -113,10 +113,10 @@ function Home() {
       </section>
 
       <DailyBestSells />
-      <DealsOfTheDay/>
-      <WhyChoose/>
-      <OrganicHealth/>
-      <OfferSection/>
+      <DealsOfTheDay />
+      <WhyChoose />
+      <OrganicHealth />
+      <OfferSection />
     </>
   );
 }

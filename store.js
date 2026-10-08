@@ -1,12 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit'
-import Bradcrumb from './src/Slices/bradcrumb'
-import cartslice from './src/Slices/addtocartSlice'
-import  Wishlist  from './src/Slices/wishlist'
+import { configureStore } from "@reduxjs/toolkit";
 
-export default configureStore({
+import cartReducer from "./src/Slices/addtocartSlice";
+
+const store = configureStore({
   reducer: {
-    bradcrumb: Bradcrumb,
-    cartitem: cartslice,
-    Wishlist:Wishlist,
+    cart: cartReducer,
   },
-})
+});
+
+export default store;
