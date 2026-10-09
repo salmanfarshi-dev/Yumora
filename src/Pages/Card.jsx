@@ -1,26 +1,24 @@
 import React from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
-
+import PageBreadcrumb from "../Components/PageBreadcrumb";
 import {
   decrementcart,
   incrementcart,
   deletecart,
   clearCart,
 } from "../Slices/addtocartSlice";
+import { Button } from "@heroui/react";
 
 function Card() {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
 
-  // Total
   const total = cartItems.reduce((acc, item) => {
     return acc + item.price * (item.quantity || 1);
   }, 0);
 
-  // Empty Cart
   if (cartItems.length === 0) {
     return (
       <section className="min-h-[60vh] flex items-center justify-center px-4">
@@ -43,9 +41,10 @@ function Card() {
   }
 
   return (
-    <section className="py-10 px-4">
-      <div className="max-w-360 mx-auto">
-        {/* Header */}
+    <section className="">
+      <PageBreadcrumb title="card" />
+
+      <div className="max-w-360 mx-auto py-10 px-4">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
@@ -64,14 +63,12 @@ function Card() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Products */}
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map((item) => (
               <div
                 key={item.id}
                 className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col sm:flex-row gap-5"
               >
-                {/* Image */}
                 <div className="w-full sm:w-32 h-32 flex-shrink-0">
                   <img
                     src={item.thumbnail}
@@ -80,7 +77,6 @@ function Card() {
                   />
                 </div>
 
-                {/* Details */}
                 <div className="flex-1">
                   <div className="flex justify-between gap-3">
                     <div>
@@ -93,7 +89,6 @@ function Card() {
                       </p>
                     </div>
 
-                    {/* Delete */}
                     <button
                       onClick={() => dispatch(deletecart(item))}
                       className="text-red-500 text-sm hover:text-red-700"
@@ -102,10 +97,8 @@ function Card() {
                     </button>
                   </div>
 
-                  {/* Price */}
                   <p className="text-xl font-bold mt-3">${item.price}</p>
 
-                  {/* Quantity */}
                   <div className="flex items-center gap-3 mt-4">
                     <button
                       onClick={() => dispatch(decrementcart(item))}
@@ -130,7 +123,6 @@ function Card() {
             ))}
           </div>
 
-          {/* Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white border border-gray-200 rounded-xl p-6 sticky top-5">
               <h2 className="text-xl font-bold">Order Summary</h2>
@@ -155,9 +147,9 @@ function Card() {
                 <span>${total.toFixed(2)}</span>
               </div>
 
-              <button className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold">
+              <Button className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold">
                 Proceed to Checkout
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -3,10 +3,13 @@ import SideHeading from "../Components/SideHeading";
 import { Button } from "@heroui/react";
 import { FaStar } from "react-icons/fa6";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { CardSlice } from "../Slices/addtocartSlice";
 
 function DealsOfTheDay() {
   const [data, setData] = useState([]);
   const [show, setShow] = useState(4);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch("https://dummyjson.com/products")
@@ -18,12 +21,14 @@ function DealsOfTheDay() {
     <section className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12 mb-70">
       <div className="flex justify-between items-center">
         <SideHeading tittle="Deals Of The Day" />
-        {
-          show < data.length && 
-          <Button onClick={()=>setShow(data.length)} className="bg-primary text-white rounded text-xs md:text-sm font-semibold">
-          All Details
-        </Button>
-        }
+        {show < data.length && (
+          <Button
+            onClick={() => setShow(data.length)}
+            className="bg-primary text-white rounded text-xs md:text-sm font-semibold"
+          >
+            All Details
+          </Button>
+        )}
       </div>
 
       <div className="mt-5 md:mt-8 lg:mt-12">
@@ -52,29 +57,50 @@ function DealsOfTheDay() {
                   <span className="text-[#B6B6B6] text-sm font-lato">
                     ({items.rating})
                   </span>
-                <div>
-                  
+                  <div></div>
                 </div>
-                </div>
-                  <p className="text-sm text-[#B6B6B6] font-lato mt-2 md:mb-3 lg:mb-6">
-                    By <span className="text-primary">{items.category}</span>
-                  </p>
+                <p className="text-sm text-[#B6B6B6] font-lato mt-2 md:mb-3 lg:mb-6">
+                  By <span className="text-primary">{items.category}</span>
+                </p>
 
-                  <div className="flex justify-between flex-col md:flex-row items-start  md:items-center ">
-                    <div className="flex items-center gap-x-3">
-                      <p className="text-success font-bold text-[15px] md:text-[18px] font-quicksand">
-                        ${items.price}
-                      </p>
-                      <p className="text-secondary2 text-xs font-semibold line-through">
-                        ${items.discountPercentage}
-                      </p>
-                    </div>
-
-                    <Button className="bg-primary text-white rounded text-xs md:text-sm font-bold font-lato w-full md:w-fit mt-2 md:mt-0">
-                      <AiOutlineShoppingCart className="text-xl" />
-                      Add
-                    </Button>
+                <div className="flex justify-between flex-col md:flex-row items-start  md:items-center ">
+                  <div className="flex items-center gap-x-3">
+                    <p className="text-success font-bold text-[15px] md:text-[18px] font-quicksand">
+                      ${items.price}
+                    </p>
+                    <p className="text-secondary2 text-xs font-semibold line-through">
+                      ${items.discountPercentage}
+                    </p>
                   </div>
+
+                  <Button
+                    onPress={() =>
+                      dispatch(
+                        CardSlice({
+                          id: items.id,
+                          title: items.title,
+                          description: items.description,
+                          thumbnail: items.thumbnail,
+                          images: items.images,
+                          price: items.price,
+                          discountPercentage: items.discountPercentage,
+                          rating: items.rating,
+                          category: items.category,
+                          brand: items.brand,
+                          stock: items.stock,
+                          availabilityStatus: items.availabilityStatus,
+                          warrantyInformation: items.warrantyInformation,
+                          shippingInformation: items.shippingInformation,
+                          returnPolicy: items.returnPolicy,
+                        }),
+                      )
+                    }
+                    className="bg-primary text-white rounded text-xs md:text-sm font-bold font-lato w-full md:w-fit mt-2 md:mt-0"
+                  >
+                    <AiOutlineShoppingCart className="text-xl" />
+                    Add
+                  </Button>
+                </div>
               </div>
             </div>
           ))}

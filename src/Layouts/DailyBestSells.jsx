@@ -59,6 +59,7 @@ function DailyBestSells() {
                 {data.map((items) => (
                   <SwiperSlide key={items.id}>
                     <ProductCard
+                     id={items.id}
                       className="md:w-66!"
                       thumbnail={items.thumbnail}
                       title={items.title}
