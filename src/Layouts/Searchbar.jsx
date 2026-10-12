@@ -16,7 +16,9 @@ function Searchbar() {
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
-  const wishlistItems = useSelector((state) => state.Wishlist?.value || []);
+  const wishlistItems = useSelector(
+  (state) => state.wishlist?.wishlistItems || []
+);
 
   useEffect(() => {
     fetch("https://dummyjson.com/products")

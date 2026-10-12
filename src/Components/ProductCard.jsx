@@ -22,7 +22,7 @@ function ProductCard({
   let dispatch = useDispatch();
 
   const handleCard = () => {
-     console.log("id:", id);
+    console.log("id:", id);
     dispatch(
       CardSlice({
         id,
@@ -33,7 +33,7 @@ function ProductCard({
         category,
         price,
         discountPercentage,
-      })
+      }),
     );
   };
 
@@ -49,7 +49,15 @@ function ProductCard({
 
       {deleteicon && (
         <div className="absolute bg-[#F74B81] top-0 right-0 w-14 h-8 rounded-bl-[20px] flex justify-center items-center">
-          {deleteicon}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              ondelete?.();
+            }}
+          >
+            {" "}
+            {deleteicon}
+          </button>
         </div>
       )}
 
@@ -78,9 +86,7 @@ function ProductCard({
           <FaStar className="text-yellow-400" />
         </div>
 
-        <span className="text-[#B6B6B6] text-sm font-lato">
-          ({rating})
-        </span>
+        <span className="text-[#B6B6B6] text-sm font-lato">({rating})</span>
       </div>
 
       <p className="text-sm text-[#B6B6B6] font-lato mt-2 mb-3 md:mb-6">

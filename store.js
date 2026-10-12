@@ -1,7 +1,7 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./src/Slices/addtocartSlice";
-
+import wishlistReducer from "./src/Slices/wishlistSlice";
 const cartPersistenceMiddleware = (store) => (next) => (action) => {
   const result = next(action);
 
@@ -21,11 +21,26 @@ const cartPersistenceMiddleware = (store) => (next) => (action) => {
 const store = configureStore({
   reducer: {
     cart: cartReducer,
+     wishlist: wishlistReducer,
   },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(cartPersistenceMiddleware),
 });
 
+
+store.subscribe(() => {
+  try {
+    const wishlistItems =
+      store.getState().wishlist?.wishlistItems || [];
+
+    localStorage.setItem(
+      "wishlistItems",
+      JSON.stringify(wishlistItems)
+    );
+  } catch (error) {
+    console.error("Failed to save wishlist:", error);
+  }
+});
 export default store;
 

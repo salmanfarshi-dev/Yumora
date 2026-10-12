@@ -9,10 +9,16 @@ import {
   clearCart,
 } from "../Slices/addtocartSlice";
 import { Button } from "@heroui/react";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { FaHeart } from "react-icons/fa6";
+import { FaRegHeart } from "react-icons/fa6";
+import { toggleWishlist } from "../Slices/wishlistSlice";
 
 function Card() {
   const dispatch = useDispatch();
-
+  const wishlistItems = useSelector(
+    (state) => state.wishlist?.wishlistItems || [],
+  );
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
 
   const total = cartItems.reduce((acc, item) => {
@@ -44,7 +50,7 @@ function Card() {
     <section className="">
       <PageBreadcrumb title="card" />
 
-      <div className="max-w-360 mx-auto py-10 px-4">
+      <div className="max-w-360 mx-auto py-5 md:py-10 px-4 md:px-0">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
@@ -89,12 +95,35 @@ function Card() {
                       </p>
                     </div>
 
-                    <button
-                      onClick={() => dispatch(deletecart(item))}
-                      className="text-red-500 text-sm hover:text-red-700"
-                    >
-                      Delete
-                    </button>
+                    <div className="flex items-center gap-3 md:gap-7">
+                      <div
+                        className="bg-transparent text-xl text-secondary"
+                        onClick={() => dispatch(deletecart(item))}
+                      >
+                        <RiDeleteBin6Fill />
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => dispatch(toggleWishlist(item))}
+                        className="bg-transparent text-xl text-secondary cursor-pointer"
+                        aria-label={
+                          wishlistItems.some(
+                            (product) => product.id === item.id,
+                          )
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
+                        }
+                      >
+                        {wishlistItems.some(
+                          (product) => product.id === item.id,
+                        ) ? (
+                          <FaHeart className="text-red-500" />
+                        ) : (
+                          <FaRegHeart />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   <p className="text-xl font-bold mt-3">${item.price}</p>
