@@ -13,7 +13,7 @@ import { RiDeleteBin6Fill } from "react-icons/ri";
 import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa6";
 import { toggleWishlist } from "../Slices/wishlistSlice";
-
+import toast, { Toaster } from "react-hot-toast";
 function Card() {
   const dispatch = useDispatch();
   const wishlistItems = useSelector(
@@ -105,7 +105,19 @@ function Card() {
 
                       <button
                         type="button"
-                        onClick={() => dispatch(toggleWishlist(item))}
+                        onClick={() => {
+                          const isWishlisted = wishlistItems.some(
+                            (product) => product.id === item.id,
+                          );
+
+                          dispatch(toggleWishlist(item));
+
+                          if (isWishlisted) {
+                            toast.success("Removed from wishlist!");
+                          } else {
+                            toast.success("Added to wishlist!");
+                          }
+                        }}
                         className="bg-transparent text-xl text-secondary cursor-pointer"
                         aria-label={
                           wishlistItems.some(
@@ -183,6 +195,7 @@ function Card() {
           </div>
         </div>
       </div>
+      <Toaster />
     </section>
   );
 }

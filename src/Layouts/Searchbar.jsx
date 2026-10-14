@@ -85,7 +85,7 @@ function Searchbar() {
                 </button>
               )}
 
-              <div className="bg-primary text-white text-[15px] w-10 h-full min-h-10 flex justify-center items-center">
+              <div className="bg-primary text-white text-[15px] w-10 h-full min-h-10  flex justify-center items-center">
                 <FiSearch />
               </div>
             </div>

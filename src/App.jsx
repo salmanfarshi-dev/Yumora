@@ -14,12 +14,12 @@ import Wishlist from './Pages/Wishtlist'
 import Registation from './Pages/Registation'
 import Login from './Pages/Login'
 import Contact from './Pages/Contact'
-
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <>
-    
+    <Toaster />
     <Routes>
       <Route path='/' element={ <Rootlayout/> }>
       <Route index element={ <Home/> }/>
