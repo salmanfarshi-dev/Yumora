@@ -4,6 +4,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaStar } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { CardSlice } from "../Slices/addtocartSlice";
 
 function ProductCard({
   id,
@@ -22,10 +23,10 @@ function ProductCard({
   let dispatch = useDispatch();
 
   const handleCard = () => {
-    console.log("id:", id);
-
-   toast.success("Product added to your cart!");
-
+    if (!id) {
+      toast.error("Product ID is missing!");
+      return;
+    }
 
     dispatch(
       CardSlice({
@@ -39,14 +40,13 @@ function ProductCard({
         discountPercentage,
       }),
     );
-  };
 
+    toast.success("Product added to your cart!");
+  };
   return (
-    
     <div
       className={`w-full md:w-72.5 bg-white border border-border2 rounded-[15px] px-2 md:px-6 py-3 md:py-6 overflow-hidden relative hover:shadow-2xl transition duration-250 ${className}`}
     >
-      
       {off && (
         <div className="absolute bg-[#F74B81] top-0 left-0 w-14 h-8 rounded-br-[20px] flex justify-center items-center">
           <p className="text-white text-xs font-normal font-lato">{off}</p>
@@ -118,7 +118,6 @@ function ProductCard({
           Add
         </Button>
       </div>
-       
     </div>
   );
 }
