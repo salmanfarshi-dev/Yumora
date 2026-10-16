@@ -9,7 +9,7 @@ import {
   NavbarMenuItem,
   Button,
 } from "@heroui/react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { HiOutlineBars3CenterLeft, HiOutlineXMark } from "react-icons/hi2";
 
 export const AcmeLogo = () => {
@@ -130,11 +130,12 @@ function App() {
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <div className="flex items-center gap-x-2 ">
+          <Link to="/contact">
             <Button className="bg-primary text-white font-[16px] md:text-[18px] lg:text-xl md:py-6 md:px-6">
               Contact Us
             </Button>
-          </div>
+          </Link>
+          
         </NavbarItem>
       </NavbarContent>
 
