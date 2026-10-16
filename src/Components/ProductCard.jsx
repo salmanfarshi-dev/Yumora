@@ -41,7 +41,10 @@ function ProductCard({
       }),
     );
 
-    toast.success("Product added to your cart!");
+    toast.success(`${title} added to cart!`, {
+      duration: 1000,
+      position: "top-right",
+    });
   };
   return (
     <div

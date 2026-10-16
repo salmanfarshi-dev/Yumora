@@ -20,7 +20,25 @@ import Error from './Pages/Error'
 function App() {
   return (
     <>
-    <Toaster />
+  <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "#0F172A",
+              color: "#FFFFFF",
+              border: "1px solid #334155",
+              borderRadius: "12px",
+              padding: "10px 18px",
+              fontSize: "14px",
+            },
+            success: {
+              iconTheme: {
+                primary: "#22C55E",
+                secondary: "#FFFFFF",
+              },
+            },
+          }}
+        />
     <Routes>
       <Route path='/' element={ <Rootlayout/> }>
       <Route index element={ <Home/> }/>

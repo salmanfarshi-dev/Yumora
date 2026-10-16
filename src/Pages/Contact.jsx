@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Form, Input, Textarea, Button } from "@heroui/react";
 import {
@@ -36,7 +35,7 @@ const contactInfo = [
     title: "Visit us",
     description: "Come say hello at our office.",
     value: "Dhaka, Bangladesh",
-    href: "https://maps.google.com/?q=Dhaka+Bangladesh",
+    href: "https://www.google.com/maps/place/UCEP+Mirpur+Technical+School/@23.8008389,90.358305,20.92z/data=!4m15!1m8!3m7!1s0x3755c0e96fce29dd:0x6ccd9e51aba9e64d!2sMirpur-1,+Dhaka!3b1!8m2!3d23.7956037!4d90.3536548!16s%2Fg%2F11h051wl9!3m5!1s0x3755c0dd0304c56b:0x3cddf5da012b9cd2!8m2!3d23.8009814!4d90.3583948!16s%2Fg%2F11gbksvw28?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D",
     color: "bg-emerald-50 text-emerald-600",
   },
 ];
@@ -56,7 +55,9 @@ function Contact() {
       return;
     }
 
-    toast.success("Form validated! Connect an email service to send your message.");
+    toast.success(
+      "Form validated! Connect an email service to send your message.",
+    );
     event.currentTarget.reset();
   };
 
@@ -66,7 +67,6 @@ function Contact() {
       <PageBreadcrumb title="Contact Us" />
 
       <div className="mx-auto max-w-360 px-4 pt-8 sm:px-6 md:pt-12 lg:px-8">
-        {/* Hero section */}
         <div className="relative isolate overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 sm:px-10 md:py-16 lg:px-16">
           <div className="absolute -right-20 -top-24 -z-10 h-80 w-80 rounded-full bg-blue-600/30 blur-3xl" />
           <div className="absolute -bottom-32 left-1/3 -z-10 h-72 w-72 rounded-full bg-violet-600/20 blur-3xl" />
@@ -86,9 +86,9 @@ function Contact() {
               </h1>
 
               <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Have a question about your order, need help choosing a
-                product, or just want to say hello? Send us a message.
-                We're always happy to help.
+                Have a question about your order, need help choosing a product,
+                or just want to say hello? Send us a message. We're always happy
+                to help.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -115,7 +115,6 @@ function Contact() {
               </div>
             </div>
 
-            {/* Hero visual */}
             <div className="relative hidden min-h-64 items-center justify-center lg:flex">
               <div className="absolute h-64 w-64 rounded-full border border-white/10" />
               <div className="absolute h-48 w-48 rounded-full border border-white/10" />
@@ -132,9 +131,7 @@ function Contact() {
                   <p className="text-sm font-semibold text-white">
                     Quick response
                   </p>
-                  <p className="mt-1 text-xs text-slate-300">
-                    We're listening
-                  </p>
+                  <p className="mt-1 text-xs text-slate-300">We're listening</p>
                 </div>
               </div>
 
@@ -155,7 +152,6 @@ function Contact() {
           </div>
         </div>
 
-        {/* Contact information cards */}
         <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {contactInfo.map((item) => {
             const Icon = item.icon;
@@ -169,7 +165,9 @@ function Contact() {
                 className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg hover:shadow-slate-200/60 sm:p-6"
               >
                 <div className="flex items-start justify-between">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl text-xl ${item.color}`}>
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl text-xl ${item.color}`}
+                  >
                     <Icon />
                   </div>
 
@@ -192,9 +190,7 @@ function Contact() {
           })}
         </div>
 
-        {/* Contact form and help section */}
         <div className="mt-8 grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:gap-8">
-          {/* Form */}
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 md:p-10">
             <div className="mb-8">
               <span className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
@@ -206,8 +202,8 @@ function Contact() {
               </h2>
 
               <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-                Fill out the form below and tell us how we can help.
-                Please use your correct email address.
+                Fill out the form below and tell us how we can help. Please use
+                your correct email address.
               </p>
             </div>
 
@@ -263,8 +259,8 @@ function Contact() {
 
               <div className="flex w-full flex-col justify-between gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center">
                 <p className="max-w-xs text-xs leading-5 text-slate-400">
-                  By submitting this form, you agree to be contacted
-                  regarding your inquiry.
+                  By submitting this form, you agree to be contacted regarding
+                  your inquiry.
                 </p>
 
                 <Button
@@ -278,21 +274,17 @@ function Contact() {
             </Form>
           </div>
 
-          {/* Help sidebar */}
           <div className="space-y-5">
             <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 p-6 text-white shadow-xl shadow-blue-600/15 sm:p-7">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/15 text-2xl">
                 <FiHeadphones />
               </div>
 
-              <h3 className="mt-6 text-xl font-bold">
-                Need a little help?
-              </h3>
+              <h3 className="mt-6 text-xl font-bold">Need a little help?</h3>
 
               <p className="mt-3 text-sm leading-6 text-blue-100">
-                Whether it's an order update, product question, or
-                something else, we're happy to point you in the right
-                direction.
+                Whether it's an order update, product question, or something
+                else, we're happy to point you in the right direction.
               </p>
 
               <a
@@ -327,21 +319,18 @@ function Contact() {
 
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-slate-500">Friday</span>
-                  <span className="font-semibold text-slate-800">
-                    Closed
-                  </span>
+                  <span className="font-semibold text-slate-800">Closed</span>
                 </div>
               </div>
 
               <p className="mt-4 text-xs leading-5 text-slate-400">
-                Business hours shown are sample details. Update them to
-                match your actual support schedule.
+                Business hours shown are sample details. Update them to match
+                your actual support schedule.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom note */}
         <div className="mt-8 flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-6 text-center sm:flex-row sm:gap-3">
           <FiMessageCircle className="text-xl text-blue-600" />
           <p className="text-sm text-slate-500">
