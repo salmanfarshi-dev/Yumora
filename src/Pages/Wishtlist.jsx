@@ -41,6 +41,7 @@ function Wishtlist() {
             {wishlistItems.slice(0, show).map((item) => (
               <ProductCard
                 key={item.id}
+                id={item.id}
                 deleteicon={
                   <RiDeleteBinLine className="text-white cursor-pointer" />
                 }

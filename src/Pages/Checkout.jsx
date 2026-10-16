@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa6";
 import { Form, Input, Button } from "@heroui/react";
 import { HiOutlineEye } from "react-icons/hi";
 import { HiOutlineEyeOff } from "react-icons/hi";
-
+import { useSelector } from "react-redux";
 const paymentMethod = [
   {
     image: "/visacard.png",
@@ -20,6 +20,15 @@ const paymentMethod = [
   },
 ];
 function Checkout() {
+  const cartItems = useSelector((state) => state.cart?.cartItems || []);
+
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * (item.quantity || 1),
+    0,
+  );
+
+  const deliveryCharges = cartItems.length > 0 ? 10 : 0;
+  const totalAmount = subtotal + deliveryCharges;
   const [eye, setEye] = useState(false);
 
   const handleeye = () => {
@@ -44,7 +53,7 @@ function Checkout() {
                     subtotal
                   </h6>
                   <span className="text-xs md:text-sm text-cardtittle">
-                    $ 10.56
+                    ${subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
@@ -52,7 +61,7 @@ function Checkout() {
                     delivery charges
                   </h6>
                   <span className="text-xs md:text-sm text-cardtittle">
-                    $ 10
+                    ${deliveryCharges.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -61,72 +70,46 @@ function Checkout() {
                   total ammount
                 </h6>
                 <span className="text-xs md:text-sm text-cardtittle font-semibold">
-                  $ 100
+                  ${totalAmount.toFixed(2)}
                 </span>
               </div>
 
-              <div className="mt-4 md:mt-7 lg:mt-9 ">
-                <div className="flex flex-col gap-2 md:gap-4 lg:gap-6">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-bg flex justify-center items-center  w-20 h-20 rounded">
-                      <img
-                        src="/→ product-1-1.jpg.png"
-                        alt=""
-                        className=" w-14 h-14"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1 md:gap-2 ">
-                      <h3 className="text-sm md:text-[16px] tracking-[0.48px] capitalize text-cardtittle">
-                        this is my product
-                      </h3>
-                      <div className="flex items-center gap-x-1 md:gap-x-2">
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
+              <div className="mt-4 md:mt-7 lg:mt-9">
+                <div className="flex flex-col gap-3 md:gap-4 lg:gap-6">
+                  {cartItems.map((item) => (
+                    <div key={item.id} className="flex items-center gap-4">
+                      <div className="bg-bg flex justify-center items-center w-20 h-20 rounded shrink-0">
+                        <img
+                          src={item.thumbnail}
+                          alt={item.title}
+                          className="w-14 h-14 object-contain"
+                        />
                       </div>
-                      <div className="flex gap-1 md:gap-4 lg:md-6">
-                        <h3 className="text-sm md:text-[16px] font-bold text-success md:tracking-[0.48px]">
-                          $ 120.25
+
+                      <div className="flex flex-col gap-1 md:gap-2 min-w-0">
+                        <h3 className="text-sm md:text-[16px] tracking-[0.48px] capitalize text-cardtittle">
+                          {item.title}
                         </h3>
-                        <span className="text-xs md:text-sm font-normal text-secondary2 md:tracking-[0.48px] line-through">
-                          {" "}
-                          $ 12.25
-                        </span>
+
+                        <div className="flex items-center gap-1 md:gap-2">
+                          <FaStar className="text-yellow-400" />
+                          <span className="text-xs text-secondary2">
+                            {item.rating}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h3 className="text-sm md:text-[16px] font-bold text-success">
+                            ${(item.price * (item.quantity || 1)).toFixed(2)}
+                          </h3>
+
+                          <span className="text-xs text-secondary2">
+                            Qty: {item.quantity || 1}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="bg-bg flex justify-center items-center  w-20 h-20 rounded">
-                      <img
-                        src="/→ product-1-1.jpg.png"
-                        alt=""
-                        className=" w-14 h-14"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1 md:gap-2 ">
-                      <h3 className="text-sm md:text-[16px] tracking-[0.48px] capitalize text-cardtittle">
-                        this is my product
-                      </h3>
-                      <div className="flex items-center gap-x-1 md:gap-x-2">
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                        <FaStar className="text-yellow-400" />
-                      </div>
-                      <div className="flex gap-1 md:gap-4 lg:md-6">
-                        <h3 className="text-sm md:text-[16px] font-bold text-success md:tracking-[0.48px]">
-                          $ 120.25
-                        </h3>
-                        <span className="text-xs md:text-sm font-normal text-secondary2 md:tracking-[0.48px] line-through">
-                          {" "}
-                          $ 12.25
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>

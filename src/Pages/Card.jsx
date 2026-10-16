@@ -14,7 +14,10 @@ import { FaHeart } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa6";
 import { toggleWishlist } from "../Slices/wishlistSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router";
+
 function Card() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const wishlistItems = useSelector(
     (state) => state.wishlist?.wishlistItems || [],
@@ -188,7 +191,10 @@ function Card() {
                 <span>${total.toFixed(2)}</span>
               </div>
 
-              <Button className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold">
+              <Button
+                onClick={() => navigate("/checkout")}
+                className="w-full bg-primary text-white py-3 rounded-lg mt-6 font-semibold"
+              >
                 Proceed to Checkout
               </Button>
             </div>
