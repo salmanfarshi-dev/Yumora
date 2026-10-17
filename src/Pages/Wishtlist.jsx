@@ -58,7 +58,7 @@ function Wishtlist() {
           </div>
         )}
 
-        {wishlistItems.length > 12 && (
+        {show < wishlistItems.length && (
           <div className="text-center mt-6">
             <button
               onClick={() => setShow((prev) => prev + 12)}

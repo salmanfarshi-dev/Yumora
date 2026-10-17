@@ -135,7 +135,6 @@ function App() {
               Contact Us
             </Button>
           </Link>
-          
         </NavbarItem>
       </NavbarContent>
 

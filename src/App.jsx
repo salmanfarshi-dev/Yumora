@@ -16,6 +16,7 @@ import Login from './Pages/Login'
 import Contact from './Pages/Contact'
 import { Toaster } from "react-hot-toast";
 import Error from './Pages/Error'
+import Account from './Pages/Account'
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
       <Route path='contact' element={ <Contact/> }/>
       <Route path='registation' element={ <Registation/> }/>
       <Route path='login' element={ <Login/>} />
+      <Route path='account' element={ <Account/> } />
 
       </Route>
       <Route path='*' element={ <Error/> }/>
