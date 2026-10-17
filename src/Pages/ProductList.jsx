@@ -18,13 +18,13 @@ function ProductList() {
       .then((data) => setData(data.products));
   }, []);
 
-  // Select change
+
   const handleselect = (e) => {
     setSelect(Number(e.target.value));
     setCurrentPage(1);
   };
 
-  // Pagination
+
   const start = (currentPage - 1) * select;
 
   const currentItems = data.slice(start, start + select);
@@ -36,7 +36,7 @@ function ProductList() {
       <PageBreadcrumb title="ProductList"/>
 
      <div className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12">
-       {/* Top */}
+
       <div className="bg-bg p-2 md:p-3 rounded flex items-center justify-between">
         <p className="text-xs md:text-sm text-secondary2 font-normal tracking-[0.48px]">
           We found {data.length} items for you!

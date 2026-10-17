@@ -65,7 +65,7 @@ function DealsOfTheDay() {
   };
 
   return (
-    <section className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12 mb-70">
+    <section className="max-w-360 w-full mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12 mb-70">
       <Toaster
         position="top-right"
         toastOptions={{
@@ -130,13 +130,13 @@ function DealsOfTheDay() {
             No products available right now.
           </p>
         ) : (
-          <div className="flex flex-wrap justify-between gap-x-2 gap-y-50">
+          <div className="flex flex-wrap justify-between gap-x-1 gap-y-50">
             {data.slice(0, show).map((items) => (
               <div
                 key={items.id}
-                className="bg-bg rounded-xl md:w-85 w-41 h-auto flex justify-center items-center relative md:hover:-translate-y-3 duration-300"
+                className="bg-bg rounded-xl md:w-85 w-39 h-auto flex justify-center items-center relative md:hover:-translate-y-3 duration-300"
               >
-                <img src={items.thumbnail} alt={items.title} />
+                <img src={items.thumbnail} alt={items.title} className="w-30 h-30 md:w-50 md:h-50 object-cover" />
 
                 <div className="absolute w-[90%] mt-80 md:mt-90 bg-white px-2 md:px-4 lg:px-5 py-2 md:py-3 lg:py-5 rounded-xl shadow">
                   <p className="text-xs font-lato font-normal text-secondary2 mt-2 md:mt-4 line-clamp-1">
@@ -147,7 +147,7 @@ function DealsOfTheDay() {
                     {items.description}
                   </h3>
 
-                  <div className="flex items-center gap-x-2 md:gap-x-5 py-1 md:py-2">
+                  <div className="flex items-center gap-x-1 md:gap-x-5 py-1 md:py-2">
                     <div className="flex items-center gap-x-1 md:gap-x-2">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <FaStar
@@ -166,7 +166,7 @@ function DealsOfTheDay() {
                     </span>
                   </div>
 
-                  <p className="text-sm text-[#B6B6B6] font-lato mt-2 md:mb-3 lg:mb-6">
+                  <p className="text-sm text-[#B6B6B6] font-lato mt-1 md:mb-3 lg:mb-6">
                     By{" "}
                     <span className="text-primary">{items.category}</span>
                   </p>
