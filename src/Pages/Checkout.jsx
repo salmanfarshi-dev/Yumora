@@ -1,324 +1,437 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageBreadcrumb from "../Components/PageBreadcrumb";
 import { FaStar } from "react-icons/fa6";
 import { Form, Input, Button } from "@heroui/react";
-import { HiOutlineEye } from "react-icons/hi";
-import { HiOutlineEyeOff } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import toast from "react-hot-toast";
+import { auth, db } from "../firebase";
+import { clearCart } from "../Slices/addtocartSlice";
+
 const paymentMethod = [
-  {
-    image: "/visacard.png",
-  },
-  {
-    image: "/skrill-logo.png",
-  },
-  {
-    image: "/PayPal-Logo.wine.png",
-  },
-  {
-    image: "/MasterCard_early_1990s_logo.png",
-  },
+  { image: "/visacard.png" },
+  { image: "/skrill-logo.png" },
+  { image: "/PayPal-Logo.wine.png" },
+  { image: "/MasterCard_early_1990s_logo.png" },
 ];
+
 function Checkout() {
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [payment, setPayment] = useState("Cash on delivery");
+
   const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * (item.quantity || 1),
+    (total, item) => total + Number(item.price || 0) * (item.quantity || 1),
     0,
   );
 
   const deliveryCharges = cartItems.length > 0 ? 10 : 0;
   const totalAmount = subtotal + deliveryCharges;
-  const [eye, setEye] = useState(false);
 
-  const handleeye = () => {
-    setEye(!eye);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthChecked(true);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const handlePlaceOrder = async (event) => {
+    event.preventDefault();
+
+    if (submitting) return;
+
+    if (!authChecked) {
+      toast.error("Please wait while we verify your account.");
+      return;
+    }
+
+    if (!user) {
+      navigate("/account", {
+        state: { from: "/checkout" },
+      });
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty!");
+      navigate("/cart");
+      return;
+    }
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const firstName = String(formData.get("firstname") || "").trim();
+
+    const lastName = String(formData.get("lastname") || "").trim();
+
+    const email = String(formData.get("email") || "").trim();
+
+    const phone = String(formData.get("phone") || "").trim();
+
+    const address = String(formData.get("address") || "").trim();
+
+    const city = String(formData.get("city") || "").trim();
+
+    const postCode = String(formData.get("PostCode") || "").trim();
+
+    const country = String(formData.get("country") || "").trim();
+
+    const region = String(formData.get("region") || "").trim();
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !address ||
+      !city ||
+      !country ||
+      !region
+    ) {
+      toast.error("Please fill in all required billing details.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    const orderItems = cartItems.map((item) => ({
+      productId: item.id,
+      title: item.title || "",
+      thumbnail: item.thumbnail || "",
+      price: Number(item.price || 0),
+      quantity: Number(item.quantity || 1),
+      subtotal: Number(item.price || 0) * Number(item.quantity || 1),
+    }));
+
+    const order = {
+      userId: user.uid,
+      customer: {
+        firstName,
+        lastName,
+        email,
+        phone,
+        address,
+        city,
+        postCode,
+        country,
+        region,
+      },
+      items: orderItems,
+      subtotal,
+      deliveryCharges,
+      totalAmount,
+      currency: "USD",
+      paymentMethod: payment,
+      paymentStatus: "Pending",
+      orderStatus: "Pending",
+      createdAt: serverTimestamp(),
+    };
+
+    try {
+      setSubmitting(true);
+
+      await addDoc(collection(db, "orders"), order);
+
+      dispatch(clearCart());
+      toast.success("Order placed successfully!");
+
+      navigate("/");
+    } catch (error) {
+      console.error("Place order error:", error);
+
+      if (error.code === "permission-denied") {
+        toast.error("Permission denied. Please check your Firestore rules.");
+      } else {
+        toast.error("Unable to place your order. Please try again.");
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  if (!authChecked) {
+    return (
+      <section>
+        <PageBreadcrumb title="Checkout" />
+        <div className="min-h-60 flex items-center justify-center">
+          <p className="text-secondary2">Checking your account...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section>
       <PageBreadcrumb title="Checkout" />
 
-      <div className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 ">
+      <div className="max-w-360 mx-auto px-4 md:px-6 lg:px-0">
         <div className="my-7 md:my-16 lg:my-25 grid grid-cols-12 gap-5 md:gap-10 lg:gap-16 items-start">
-          <div className="col-span-12 md:col-span-4 ">
-            <div className="border border-border2 rounded p-2 md:p-4 lg:p-6 shadow">
-              <h5 className="text-sm md:text-[16px] lg:text-xl font-semibold">
-                Summery
+          <div className="col-span-12 md:col-span-4">
+            <div className="border border-border2 rounded p-3 md:p-4 lg:p-6 shadow">
+              <h5 className="text-sm md:text-xl font-semibold">
+                Order Summary
               </h5>
 
-              <div className="mt-3 md:mt-5 flex flex-col gap-2 md:gap-3 lg:gap-5 border-b border-border2 pb-2 md:pb-6">
-                <div className="flex justify-between items-center">
-                  <h6 className="text-xs md:text-sm text-secondary2 capitalize">
-                    subtotal
-                  </h6>
-                  <span className="text-xs md:text-sm text-cardtittle">
-                    ${subtotal.toFixed(2)}
-                  </span>
+              <div className="mt-4 flex flex-col gap-3 border-b border-border2 pb-4">
+                <div className="flex justify-between gap-2">
+                  <span className="text-sm text-secondary2">Subtotal</span>
+                  <span className="text-sm">${subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <h6 className="text-xs md:text-sm text-secondary2 capitalize">
-                    delivery charges
-                  </h6>
-                  <span className="text-xs md:text-sm text-cardtittle">
-                    ${deliveryCharges.toFixed(2)}
+
+                <div className="flex justify-between gap-2">
+                  <span className="text-sm text-secondary2">
+                    Delivery charges
                   </span>
+                  <span className="text-sm">${deliveryCharges.toFixed(2)}</span>
                 </div>
               </div>
-              <div className="flex justify-between items-center mt-2 md:mt-5">
-                <h6 className=" text-sm md:text-[16px] text-cardtittle font-semibold capitalize">
-                  total ammount
-                </h6>
-                <span className="text-xs md:text-sm text-cardtittle font-semibold">
+
+              <div className="flex justify-between gap-2 mt-4">
+                <span className="font-semibold">Total Amount</span>
+                <span className="font-bold text-primary">
                   ${totalAmount.toFixed(2)}
                 </span>
               </div>
 
-              <div className="mt-4 md:mt-7 lg:mt-9">
-                <div className="flex flex-col gap-3 md:gap-4 lg:gap-6">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex items-center gap-4">
-                      <div className="bg-bg flex justify-center items-center w-20 h-20 rounded shrink-0">
-                        <img
-                          src={item.thumbnail}
-                          alt={item.title}
-                          className="w-14 h-14 object-contain"
-                        />
+              <div className="mt-5 flex flex-col gap-4">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex items-center gap-3">
+                    <div className="bg-bg flex items-center justify-center w-16 h-16 rounded shrink-0">
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className="w-12 h-12 object-contain"
+                      />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-sm font-medium line-clamp-2">
+                        {item.title}
+                      </h3>
+
+                      <div className="flex items-center gap-1 mt-1">
+                        <FaStar className="text-yellow-400" />
+                        <span className="text-xs text-secondary2">
+                          {item.rating ?? "N/A"}
+                        </span>
                       </div>
 
-                      <div className="flex flex-col gap-1 md:gap-2 min-w-0">
-                        <h3 className="text-sm md:text-[16px] tracking-[0.48px] capitalize text-cardtittle">
-                          {item.title}
-                        </h3>
+                      <div className="flex justify-between gap-2 mt-1">
+                        <span className="text-sm font-bold text-success">
+                          $
+                          {(
+                            Number(item.price || 0) * (item.quantity || 1)
+                          ).toFixed(2)}
+                        </span>
 
-                        <div className="flex items-center gap-1 md:gap-2">
-                          <FaStar className="text-yellow-400" />
-                          <span className="text-xs text-secondary2">
-                            {item.rating}
-                          </span>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="text-sm md:text-[16px] font-bold text-success">
-                            ${(item.price * (item.quantity || 1)).toFixed(2)}
-                          </h3>
-
-                          <span className="text-xs text-secondary2">
-                            Qty: {item.quantity || 1}
-                          </span>
-                        </div>
+                        <span className="text-xs text-secondary2">
+                          Qty: {item.quantity || 1}
+                        </span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="border border-border2 rounded p-2 md:p-4 lg:p-6 shadow mt-3 md:mt-8">
-              <h5 className="text-sm md:text-[16px] lg:text-xl font-semibold">
-                Payment Method
-              </h5>
-              <p className="text-xs md:text-sm mt-2 md:mt-5 font-normal text-secondary2">
-                Please select the preferred payment method to use on this order.
-              </p>
-              <div className="flex flex-col mt-3 md:mt-5 gap-1 md:gap-3">
-                <div className="flex items-center gap-2 md:gap-4 lg:gap-6">
-                  <input
-                    type="radio"
-                    name="payment"
-                    className="accent-primary"
-                  />
-                  <p className="text-xs md:text-sm font-medium capitalize text-secondary2">
-                    Cash on delivery
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2 md:gap-4 lg:gap-6">
-                  <input
-                    type="radio"
-                    name="payment"
-                    className="accent-primary"
-                  />
-                  <p className="text-xs md:text-sm font-medium capitalize text-secondary2">
-                    UPI
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2 md:gap-4 lg:gap-6">
-                  <input
-                    type="radio"
-                    name="payment"
-                    className="accent-primary"
-                  />
-                  <p className="text-xs md:text-sm font-medium capitalize text-secondary2">
-                    Bank transfer
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="border border-border2 rounded p-2 md:p-4 lg:p-6 shadow mt-3 md:mt-8">
-              <h5 className="text-sm md:text-[16px] lg:text-xl font-semibold">
-                Payment Method
-              </h5>
-
-              <div className="flex gap-2 md:gap-4 items-center mt-2 md:mt-5">
-                {paymentMethod.map((payment) => (
-                  <div className="flex justify-center items-center w-15 md:w-20  h-8 md:h-10 md:py-3 shadow border border-border2 rounded cursor-pointer">
-                    <img src={payment.image} alt="" className="w-8 md:w-12" />
                   </div>
                 ))}
               </div>
             </div>
+
+            <div className="border border-border2 rounded p-3 md:p-4 lg:p-6 shadow mt-4">
+              <h5 className="text-sm md:text-xl font-semibold">
+                Payment Method
+              </h5>
+
+              <p className="text-xs md:text-sm mt-3 text-secondary2">
+                Select your preferred payment method.
+              </p>
+
+              <div className="flex flex-col mt-4 gap-3">
+                {["Cash on delivery", "UPI", "Bank transfer"].map((method) => (
+                  <label
+                    key={method}
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="payment-choice"
+                      value={method}
+                      checked={payment === method}
+                      onChange={() => setPayment(method)}
+                      className="accent-primary"
+                    />
+                    <span className="text-sm text-secondary2">{method}</span>
+                  </label>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-2 mt-5">
+                {paymentMethod.map((item, index) => (
+                  <div
+                    key={item.image}
+                    className="flex justify-center items-center w-14 md:w-16 h-9 shadow border border-border2 rounded"
+                  >
+                    <img
+                      src={item.image}
+                      alt={`Payment option ${index + 1}`}
+                      className="w-10 md:w-12 max-h-7 object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-xs text-secondary2 mt-3">
+                Online payment processing is not connected yet.
+              </p>
+            </div>
           </div>
 
-          <div className="col-span-12 md:col-span-8 border border-border2 rounded p-2 md:p-4 lg:p-6 shadow">
-            <h5 className="text-sm md:text-[16px] lg:text-xl font-semibold">
+          <div className="col-span-12 md:col-span-8 border border-border2 rounded p-3 md:p-4 lg:p-6 shadow">
+            <h5 className="text-sm md:text-xl font-semibold">
               Billing Details
             </h5>
 
-            <div className="mt-2 md:mt-4 lg:mt-6">
-              <p className="text-xs md:text-sm capitalize font-normal text-cardtittle">
-                Checkout option
-              </p>
+            {!user && (
+              <div className="mt-4 rounded-lg border border-border2 p-3">
+                <p className="text-sm text-secondary2">
+                  You need to register before placing your order.
+                </p>
 
-              <div className="mt-2 md:mt-3 flex flex-col md:flex-row gap-2 md:gap-5 lg:gap-7">
-                <div className="flex items-center gap-2 md:gap-3">
-                  <input type="radio" name="bill" className="accent-primary" />
-                  <p className="text-xs md:text-sm font-medium text-secondary2">
-                    I want to use an existing address
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 md:gap-3">
-                  <input type="radio" name="bill" className="accent-primary" />
-                  <p className="text-xs md:text-sm font-medium text-secondary2">
-                    I want to use new address
-                  </p>
-                </div>
+                <Button
+                  type="button"
+                  className="mt-3 bg-primary text-white rounded"
+                  onPress={() =>
+                    navigate("/account", {
+                      state: { from: "/checkout" },
+                    })
+                  }
+                >
+                  Register Account
+                </Button>
               </div>
+            )}
 
-              <Form className=" md:w-[90%]  mt-3 md:mt-6 lg:mt-8 flex flex-col gap-4">
-                <div className="flex flex-wrap justify-between gap-y-6">
-                  <Input
-                    isRequired
-                    errorMessage="Please enter a valid username"
-                    label="First Name"
-                    labelPlacement="outside"
-                    name="firstname"
-                    placeholder="Enter your First Name"
-                    type="text"
-                    className="md:w-[45%]"
-                  />
-                  <Input
-                    isRequired
-                    errorMessage="Please enter a valid username"
-                    label="Last Name"
-                    labelPlacement="outside"
-                    name="lastname"
-                    placeholder="Enter your Last Name"
-                    type="text"
-                    className="md:w-[45%]"
-                  />
-
-                  <Input
-                    isRequired
-                    errorMessage="Please enter a valid email"
-                    label="Email"
-                    labelPlacement="outside"
-                    name="email"
-                    placeholder="Enter your email"
-                    type="email"
-                    className="md:w-[45%]"
-                  />
-                  <Input
-                    isRequired
-                    errorMessage="Please enter a valid phone number"
-                    label="Phone Number"
-                    labelPlacement="outside"
-                    name="phone"
-                    placeholder="Enter your Phone Number"
-                    type="tel"
-                    className="md:w-[45%]"
-                  />
-                </div>
-                <div className="w-full ">
-                  <div className="relative">
-                    <Input
-                      isRequired
-                      errorMessage="Please enter Password"
-                      label="Password"
-                      labelPlacement="outside"
-                      name="password"
-                      placeholder="Enter your password"
-                      type={eye ? "text" : "password"}
-                    />
-                    <div
-                      onClick={handleeye}
-                      className="absolute top-1/2 -translate-1/2 right-5"
-                    >
-                      {eye ? <HiOutlineEye /> : <HiOutlineEyeOff />}
-                    </div>
-                  </div>
-                </div>
+            <Form
+              className="mt-5 md:w-[90%] flex flex-col gap-5"
+              onSubmit={handlePlaceOrder}
+            >
+              <div className="flex flex-wrap justify-between gap-y-6 w-full">
                 <Input
                   isRequired
-                  errorMessage="Please enter this field"
-                  label="Address"
+                  name="firstname"
+                  label="First Name"
                   labelPlacement="outside"
-                  name="address"
-                  placeholder="Enter your Address"
-                  type="text"
+                  placeholder="Enter your first name"
+                  className="md:w-[48%]"
+                  autoComplete="given-name"
                 />
-                <div className="flex flex-wrap justify-between gap-y-6">
-                  <Input
-                    isRequired
-                    errorMessage="Please enter this field"
-                    label="City"
-                    labelPlacement="outside"
-                    name="city"
-                    placeholder="City"
-                    type="text"
-                    className="md:w-[45%]"
-                  />
-                  <Input
-                    errorMessage="Please enter this field"
-                    label="Post Code"
-                    labelPlacement="outside"
-                    name="PostCode"
-                    placeholder="Post Code"
-                    type="text"
-                    className="md:w-[45%]"
-                  />
 
-                  <Input
-                    isRequired
-                    errorMessage="Please enter this field"
-                    label="Country"
-                    labelPlacement="outside"
-                    name="country"
-                    placeholder="Country"
-                    type="text"
-                    className="md:w-[45%]"
-                  />
-                  <Input
-                    isRequired
-                    errorMessage="Please enter this field"
-                    label="Region State"
-                    labelPlacement="outside"
-                    name="region"
-                    placeholder="Region/state"
-                    type="tel"
-                    className="md:w-[45%]"
-                  />
-                </div>
+                <Input
+                  isRequired
+                  name="lastname"
+                  label="Last Name"
+                  labelPlacement="outside"
+                  placeholder="Enter your last name"
+                  className="md:w-[48%]"
+                  autoComplete="family-name"
+                />
 
-                <div className="flex justify-end items-center mt-2 md:mt-4 w-full">
-                  <Button className="text-sm md:text-[16px] bg-primary rounded text-white">
-                    Place Order
-                  </Button>
-                </div>
-              </Form>
-            </div>
+                <Input
+                  isRequired
+                  name="email"
+                  label="Email"
+                  labelPlacement="outside"
+                  placeholder="Enter your email"
+                  type="email"
+                  defaultValue={user?.email || ""}
+                  className="md:w-[48%]"
+                  autoComplete="email"
+                />
+
+                <Input
+                  isRequired
+                  name="phone"
+                  label="Phone Number"
+                  labelPlacement="outside"
+                  placeholder="Enter your phone number"
+                  type="tel"
+                  className="md:w-[48%]"
+                  autoComplete="tel"
+                />
+              </div>
+
+              <Input
+                isRequired
+                name="address"
+                label="Address"
+                labelPlacement="outside"
+                placeholder="Enter your street address"
+                autoComplete="street-address"
+              />
+
+              <div className="flex flex-wrap justify-between gap-y-6 w-full">
+                <Input
+                  isRequired
+                  name="city"
+                  label="City"
+                  labelPlacement="outside"
+                  placeholder="City"
+                  className="md:w-[48%]"
+                  autoComplete="address-level2"
+                />
+
+                <Input
+                  name="PostCode"
+                  label="Post Code"
+                  labelPlacement="outside"
+                  placeholder="Post code"
+                  className="md:w-[48%]"
+                  autoComplete="postal-code"
+                />
+
+                <Input
+                  isRequired
+                  name="country"
+                  label="Country"
+                  labelPlacement="outside"
+                  placeholder="Country"
+                  className="md:w-[48%]"
+                  autoComplete="country-name"
+                />
+
+                <Input
+                  isRequired
+                  name="region"
+                  label="Region / State"
+                  labelPlacement="outside"
+                  placeholder="Region or state"
+                  className="md:w-[48%]"
+                  autoComplete="address-level1"
+                />
+              </div>
+
+              <div className="flex justify-end w-full mt-2">
+                <Button
+                  type="submit"
+                  isDisabled={submitting || cartItems.length === 0}
+                  isLoading={submitting}
+                  className="w-full md:w-auto text-sm md:text-base bg-primary text-white rounded px-6"
+                >
+                  {submitting ? "Placing Order..." : "Place Order"}
+                </Button>
+              </div>
+            </Form>
           </div>
         </div>
       </div>

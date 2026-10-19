@@ -117,7 +117,7 @@ console.log("Firebase API Key:", auth.app.options.apiKey);
   return (
     <section className="min-h-[80vh] bg-slate-50 py-10 md:py-16 px-4">
       <Toaster
-        position="top-right"
+        position="top-center"
         toastOptions={{
           duration: 2500,
           style: {
