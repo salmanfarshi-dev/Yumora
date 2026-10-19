@@ -11,12 +11,13 @@ import Faq from './Pages/Faq'
 import ProductList from './Pages/ProductList'
 import ProductDetails from './Pages/ProductsDetails'
 import Wishlist from './Pages/Wishtlist'
-import Registation from './Pages/Registation'
+// import Registation from './Pages/Registation'
 import Login from './Pages/Login'
 import Contact from './Pages/Contact'
 import { Toaster } from "react-hot-toast";
 import Error from './Pages/Error'
 import Account from './Pages/Account'
+import MyAccount from './Pages/MyAccount'
 
 function App() {
   return (
@@ -53,9 +54,10 @@ function App() {
       <Route path='productdetails/:id' element={<ProductDetails/>} />
       <Route path='wishlist' element={<Wishlist/>}/>
       <Route path='contact' element={ <Contact/> }/>
-      <Route path='registation' element={ <Registation/> }/>
+      {/* <Route path='registation' element={ <Registation/> }/> */}
       <Route path='login' element={ <Login/>} />
       <Route path='account' element={ <Account/> } />
+      <Route path='my-account' element={ <MyAccount/> } />
 
       </Route>
       <Route path='*' element={ <Error/> }/>

@@ -135,11 +135,11 @@ function Searchbar() {
           </div>
 
           <div className="flex items-center gap-x-3 lg:gap-x-8">
-           <Link to="/account">
+           <Link to="/my-account">
             <div className="flex items-center gap-x-2 text-[15px] font-medium text-black cursor-pointer">
               <MdOutlineAccountCircle className="size-6" />
 
-              <span className="hidden md:block">Account</span>
+              <span className="hidden md:block">My Account</span>
             </div>
            </Link>
 
