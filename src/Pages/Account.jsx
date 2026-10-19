@@ -34,6 +34,7 @@ function Account() {
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
+   
     e.preventDefault();
 
     if (loading) return;
@@ -58,6 +59,8 @@ function Account() {
     }
 
     setLoading(true);
+    console.log("Firebase Project ID:", auth.app.options.projectId);
+console.log("Firebase API Key:", auth.app.options.apiKey);
 
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -127,7 +130,7 @@ function Account() {
       />
 
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/70 border border-slate-100">
-        {/* Left Side */}
+    
         <div className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-blue-700 p-7 md:p-12 lg:p-14 text-white flex flex-col justify-between min-h-[300px] lg:min-h-[700px]">
           <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-blue-400/20 blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-violet-500/20 blur-3xl" />
@@ -168,7 +171,7 @@ function Account() {
           </div>
         </div>
 
-        {/* Registration Form */}
+      
         <div className="p-6 sm:p-9 md:p-12 lg:p-14">
           <div className="max-w-md mx-auto">
             <p className="text-primary font-semibold text-sm">
