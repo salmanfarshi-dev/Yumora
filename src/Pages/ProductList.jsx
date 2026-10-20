@@ -8,7 +8,7 @@ import PageBreadcrumb from "../Components/PageBreadcrumb";
 function ProductList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
-  const [select, setSelect] = useState(window.innerWidth < 768 ? 4 : 8);
+  const [select, setSelect] = useState( 8);
 
   useEffect(() => {
     fetch("https://dummyjson.com/products")
@@ -59,7 +59,7 @@ function ProductList() {
           </div>
         </div>
 
-        <div className="mt-4 md:mt-10 lg:mt-14 flex flex-wrap justify-between gap-4 md:gap-10">
+        <div className="mt-4 md:mt-10 lg:mt-14 grid grid-cols-2 gap-3 md:flex md:flex-wrap md:justify-between md:gap-10">
           {currentItems.map((item) => (
             <ProductCard
               key={item.id}

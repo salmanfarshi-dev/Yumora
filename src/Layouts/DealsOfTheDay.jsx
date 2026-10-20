@@ -130,11 +130,11 @@ function DealsOfTheDay() {
             No products available right now.
           </p>
         ) : (
-          <div className="flex flex-wrap justify-between gap-x-1 gap-y-50">
+          <div className="flex flex-wrap justify-between gap-x-1  gap-y-60">
             {data.slice(0, show).map((items) => (
               <div
                 key={items.id}
-                className="bg-bg rounded-xl md:w-85 w-39 h-auto flex justify-center items-center relative md:hover:-translate-y-3 duration-300"
+                className="bg-bg rounded-xl md:w-85 w-39 h-auto flex justify-center items-center relative md:hover:-translate-y-3 duration-300 "
               >
                 <img src={items.thumbnail} alt={items.title} className="w-30 h-30 md:w-50 md:h-50 object-cover" />
 

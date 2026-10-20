@@ -8,9 +8,11 @@ import DealsOfTheDay from "../Layouts/DealsOfTheDay";
 import WhyChoose from "../Layouts/WhyChoose";
 import OrganicHealth from "../Layouts/OrganicHealth";
 import OfferSection from "../Layouts/OfferSection";
+import { useNavigate } from "react-router";
 
 const shopping = ["/shoping (1).png", "/shoping (2).png", "/shoping (3).png"];
 function Home() {
+  let navigate = useNavigate()
   let [data, setData] = useState([]);
   const [show, setShow] = useState(12);
   const [loader, setLoader] = useState(false);
@@ -40,11 +42,13 @@ function Home() {
 
       <section className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12">
         <div className="flex items-center gap-3">
-          {shopping.map((items) => (
+          {shopping.map((items, index) => (
             <img
+            key={index}
               src={items}
-              alt=""
-              className="w-[31%] md:w-[33%] lg:h-70 object-cover"
+              alt="Image"
+              onClick={()=> navigate("/productlist")}
+              className="w-[31%] md:w-[33%] lg:h-70 object-cover cursor-pointer"
             />
           ))}
         </div>

@@ -15,6 +15,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { auth, db } from "../firebase";
+import PageBreadcrumb from "../Components/PageBreadcrumb";
 
 function Account() {
   const navigate = useNavigate();
@@ -113,8 +114,10 @@ function Account() {
   };
 
   return (
-    <section className="min-h-[80vh] bg-slate-50 py-10 md:py-16 px-4">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/70 border border-slate-100">
+    <section >
+      <PageBreadcrumb title="Account"/>
+     <div className="min-h-[80vh] bg-slate-50 py-10 md:py-16 px-4">
+       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/70 border border-slate-100">
         <div className="relative overflow-hidden bg-linear-to-br from-slate-950 via-red-950 to-red-700 p-7 md:p-12 lg:p-14 text-white flex flex-col justify-between min-h-75 lg:min-h-175">
           <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-red-500/20 blur-3xl" />
 
@@ -347,6 +350,7 @@ function Account() {
           </div>
         </div>
       </div>
+     </div>
     </section>
   );
 }

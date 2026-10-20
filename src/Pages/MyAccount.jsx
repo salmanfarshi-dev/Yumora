@@ -21,6 +21,7 @@ import {
 } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { auth, db } from "../firebase";
+import PageBreadcrumb from "../Components/PageBreadcrumb";
 
 function MyAccount() {
   const navigate = useNavigate();
@@ -205,8 +206,10 @@ function MyAccount() {
   }
 
   return (
-    <section className="min-h-[80vh] bg-slate-50 px-4 py-10 md:py-16">
-      <div className="max-w-6xl mx-auto">
+    <section >
+      <PageBreadcrumb title="My Account"/>
+     <div className="min-h-[80vh] bg-slate-50 px-4 py-10 md:py-16">
+       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-red-600">
             YUMORA CUSTOMER SPACE
@@ -416,6 +419,7 @@ function MyAccount() {
           </div>
         </div>
       </div>
+     </div>
     </section>
   );
 }
