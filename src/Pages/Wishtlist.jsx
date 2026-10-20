@@ -85,6 +85,7 @@ function Wishtlist() {
           {data.slice(20, 25).map((items) => (
             <ProductCard
               key={items.id}
+              id={items.id}
               className="w-full sm:w-[calc(50%-8px)] md:w-[calc(33.33%-14px)] lg:w-[calc(20%-20px)]"
               thumbnail={items.thumbnail}
               title={items.title}

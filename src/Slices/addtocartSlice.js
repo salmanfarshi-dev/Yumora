@@ -17,12 +17,11 @@ const addtocartSlice = createSlice({
   initialState,
 
   reducers: {
-    
     CardSlice: (state, action) => {
       const product = action.payload;
 
       const existingProduct = state.cartItems.find(
-        (item) => item.id === product.id
+        (item) => item.id === product.id,
       );
 
       if (existingProduct) {
@@ -35,10 +34,9 @@ const addtocartSlice = createSlice({
       }
     },
 
-    // Increase quantity
     incrementcart: (state, action) => {
       const item = state.cartItems.find(
-        (product) => product.id === action.payload.id
+        (product) => product.id === action.payload.id,
       );
 
       if (item) {
@@ -46,10 +44,9 @@ const addtocartSlice = createSlice({
       }
     },
 
-    // Decrease quantity
     decrementcart: (state, action) => {
       const item = state.cartItems.find(
-        (product) => product.id === action.payload.id
+        (product) => product.id === action.payload.id,
       );
 
       if (item && item.quantity > 1) {
@@ -57,14 +54,12 @@ const addtocartSlice = createSlice({
       }
     },
 
-    // Delete product
     deletecart: (state, action) => {
       state.cartItems = state.cartItems.filter(
-        (product) => product.id !== action.payload.id
+        (product) => product.id !== action.payload.id,
       );
     },
 
-    // Clear all cart
     clearCart: (state) => {
       state.cartItems = [];
     },

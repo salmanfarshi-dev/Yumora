@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import PageBreadcrumb from '../Components/PageBreadcrumb';
-
+import React, { useState } from "react";
+import PageBreadcrumb from "../Components/PageBreadcrumb";
 
 const posts = [
   {
@@ -9,8 +8,8 @@ const posts = [
     date: "Sep 12, 2026",
     comments: 7,
     image: "/Section→blog-1.jpg.png",
-    image2: '/first.jpg',
-    image3:"/seccond.jpg",
+    image2: "/first.jpg",
+    image3: "/seccond.jpg",
     body: `A raw diet keeps ingredients close to their natural state, which means more of the vitamins, minerals and enzymes survive the trip from soil to plate. Lightly prepared vegetables, sprouted grains and fresh herbs digest easily and tend to leave you feeling lighter rather than heavy.`,
     body2: `Cooking at high heat can break down water-soluble vitamins like C and several B vitamins. Keeping a portion of each meal raw is a simple way to hold onto that nutrition without changing your whole routine overnight.`,
   },
@@ -20,8 +19,8 @@ const posts = [
     date: "Sep 5, 2026",
     comments: 4,
     image: "/Section→blog-2.jpg.png",
-    image2: '/third.jpg',
-    image3:"/four.jpg",
+    image2: "/third.jpg",
+    image3: "/four.jpg",
     body: `A glass of cold-pressed greens delivers concentrated nutrients in a form your body absorbs quickly, without asking your digestion to work through fibre-heavy meals first. Apple, cucumber and a handful of spinach make a gentle everyday base.`,
     body2: `Juicing isn't a replacement for whole vegetables, but as a daily top-up it's an easy way to fit in greens on busy mornings, especially paired with a proper breakfast an hour later.`,
   },
@@ -31,26 +30,22 @@ const posts = [
     date: "Aug 28, 2026",
     comments: 11,
     image: "/Section→blog-3.jpg.png",
-    image2: '/five.jpg',
-    image3:"/six.jpg",
+    image2: "/five.jpg",
+    image3: "/six.jpg",
     body: `A well-stocked raw pantry starts with soaked nuts and seeds, a rotation of fresh sprouts, good olive oil, and a shelf of dried herbs and spices for flavour without cooking. Keep jars visible so you actually reach for them.`,
     body2: `Add a few staples like dates for natural sweetness and a citrus fruit or two, and you can build a full raw meal in minutes without any special equipment beyond a sharp knife.`,
   },
 ];
 
-
-
 function Blog() {
   const [current, setCurrent] = useState(0);
 
- const goTo = (i) => setCurrent((i + posts.length) % posts.length);
- 
- 
+  const goTo = (i) => setCurrent((i + posts.length) % posts.length);
+
   return (
     <div className="">
-       <PageBreadcrumb title="Blog" />
-      
- 
+      <PageBreadcrumb title="Blog" />
+
       <main className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12">
         <div className="overflow-hidden rounded-xl">
           <div
@@ -60,10 +55,15 @@ function Blog() {
             {posts.map((p, i) => (
               <article key={i} className="w-full flex-shrink-0 px-1">
                 <div className="overflow-hidden mb-6 bg-white flex text-center justify-center items-center mx-auto">
-                 <img src={p.image} alt="" className='w-full md:h-[500px] object-cover'/>
+                  <img
+                    src={p.image}
+                    alt=""
+                    className="w-full md:h-125 object-cover"
+                  />
                 </div>
                 <div className="text-xs mb-2 text-green-800">
-                  By {p.author} &nbsp;·&nbsp; {p.date} &nbsp;·&nbsp; {p.comments} comments
+                  By {p.author} &nbsp;·&nbsp; {p.date} &nbsp;·&nbsp;{" "}
+                  {p.comments} comments
                 </div>
                 <h1 className="font-serif text-3xl sm:text-4xl mb-4 leading-tight text-stone-900">
                   {p.title}
@@ -71,16 +71,15 @@ function Blog() {
                 <p className="mb-4 leading-relaxed text-stone-700">{p.body}</p>
 
                 <div className="flex gap-2 md:gap-4 lg:gap-8 mt-2 md:mt-5 mb-2 md:mb-5">
-                  <img src={p.image2} alt="" className='w-[50%] object-cover'/>
-                  <img src={p.image3} alt="" className='w-[50%] object-cover'/>
-
+                  <img src={p.image2} alt="" className="w-[50%] object-cover" />
+                  <img src={p.image3} alt="" className="w-[50%] object-cover" />
                 </div>
                 <p className="leading-relaxed text-stone-700">{p.body2}</p>
               </article>
             ))}
           </div>
         </div>
- 
+
         <div className="flex items-center justify-center gap-2 md:gap-5 mt-7 pt-5 border-t border-[#e3dcc8] mb-4 md:mb-8 lg:mb-14">
           <button
             onClick={() => goTo(current - 1)}
@@ -88,7 +87,7 @@ function Blog() {
           >
             ‹ Previous
           </button>
- 
+
           <div className="flex items-center gap-2">
             {posts.map((_, i) => (
               <button
@@ -104,7 +103,7 @@ function Blog() {
               </button>
             ))}
           </div>
- 
+
           <button
             onClick={() => goTo(current + 1)}
             className="text-sm px-3 py-1.5 rounded-full border border-[#e3dcc8] hover:border-primary transition-colors"
@@ -115,8 +114,6 @@ function Blog() {
       </main>
     </div>
   );
-
-  
 }
 
-export default Blog
+export default Blog;

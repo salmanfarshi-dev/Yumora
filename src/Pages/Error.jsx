@@ -18,9 +18,9 @@ function Error() {
             className="inline-flex items-center gap-2 text-2xl font-extrabold tracking-tight text-[#111827]"
           >
             <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-500/25">
-              Q
+              Y
             </span>
-            Qelviro<span className="text-blue-600">.</span>
+            Yumora<span className="text-blue-600">.</span>
           </Link>
         </div>
 
@@ -92,7 +92,7 @@ function Error() {
                     <span className="w-3 h-3 rounded-full bg-green-400" />
 
                     <div className="ml-3 flex-1 rounded-md bg-gray-100 px-3 py-1.5 text-center text-[10px] text-gray-400">
-                      qelviro.com/page
+                      Yumora.com/page
                     </div>
                   </div>
 

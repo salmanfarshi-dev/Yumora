@@ -3,35 +3,26 @@
 @source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 /* =====================   google font ======================= */
 
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+@theme {
+  /* ========== font ==========  */
 
+  --font-poppins: "Poppins", sans-serif;
+  --font-quicksand: "Quicksand", sans-serif;
+  --font-lato: "Lato", sans-serif;
 
+  /* =============== color ================ */
 
-
-@theme{
-
-    /* ========== font ==========  */
-
-    --font-poppins: "Poppins", sans-serif ;
-    --font-quicksand: "Quicksand", sans-serif;
-    --font-lato: "Lato", sans-serif;
-
-
-    /* =============== color ================ */
-
-    --color-primary: #F53E32 ;    /* button bg color */
-    --color-secondary: #253D4E ;         /* text sub heading */
-    --color-secondary2: #ADADAD ;     /* text sm secondary */
-    --color-success: #3BB77E ;
-    --color-border1: #ECECEC ;
-    --color-border2: #E9E9E9 ;
-    --color-bg: #F7F7F8 ; 
-    --color-cardtittle: #2B2B2D;
-    --color-footer-color: #777777;
-
-
-
+  --color-primary: #f53e32; /* button bg color */
+  --color-secondary: #253d4e; /* text sub heading */
+  --color-secondary2: #adadad; /* text sm secondary */
+  --color-success: #3bb77e;
+  --color-border1: #ececec;
+  --color-border2: #e9e9e9;
+  --color-bg: #f7f7f8;
+  --color-cardtittle: #2b2b2d;
+  --color-footer-color: #777777;
 }

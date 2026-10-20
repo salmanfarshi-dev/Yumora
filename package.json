@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emailjs/browser": "^5.0.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@heroui/react": "^2.8.10",
     "@mui/material": "^9.4.0",
     "@reduxjs/toolkit": "^2.13.0",
     "@tailwindcss/vite": "^4.3.3",
+    "emailjs": "^5.0.3",
     "firebase": "^13.0.0",
     "framer-motion": "^13.2.0",
     "react": "^19.2.8",

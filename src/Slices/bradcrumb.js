@@ -1,21 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const bradcrumb = createSlice({
-  name: 'breads',
+  name: "breads",
   initialState: {
     currentvalue: "",
-    previousvalue:""
+    previousvalue: "",
   },
   reducers: {
-    addbradcrumb: (state,action) => {
-     state.previousvalue=state.currentvalue
-      state.currentvalue= action.payload
+    addbradcrumb: (state, action) => {
+      state.previousvalue = state.currentvalue;
+      state.currentvalue = action.payload;
     },
-  
   },
-})
+});
 
+export const { addbradcrumb } = bradcrumb.actions;
 
-export const {  addbradcrumb, } = bradcrumb.actions
-
-export default bradcrumb.reducer
+export default bradcrumb.reducer;

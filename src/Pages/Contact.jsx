@@ -1,17 +1,24 @@
-import React from "react";
-import { Form, Input, Textarea, Button } from "@heroui/react";
+
+import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
+import { Button, Input, Textarea } from "@heroui/react";
 import {
   FiMail,
   FiPhone,
   FiMapPin,
-  FiClock,
   FiArrowUpRight,
   FiSend,
   FiMessageCircle,
   FiHeadphones,
+  FiClock,
+  FiCheckCircle,
 } from "react-icons/fi";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import PageBreadcrumb from "../Components/PageBreadcrumb";
+
+const EMAILJS_SERVICE_ID = "service_n4dvml2";
+const EMAILJS_TEMPLATE_ID = "template_vnw2x4m";
+const EMAILJS_PUBLIC_KEY = "myx33Vbsu4WrlUAbO";
 
 const contactInfo = [
   {
@@ -20,7 +27,7 @@ const contactInfo = [
     description: "Our team is here to help.",
     value: "support@example.com",
     href: "mailto:support@example.com",
-    color: "bg-blue-50 text-blue-600",
+    iconStyle: "bg-red-50 text-red-600",
   },
   {
     icon: FiPhone,
@@ -28,79 +35,116 @@ const contactInfo = [
     description: "Mon–Sat, 9 AM – 6 PM.",
     value: "+880 1XXX-XXXXXX",
     href: "tel:+8801XXXXXXXXX",
-    color: "bg-violet-50 text-violet-600",
+    iconStyle: "bg-rose-50 text-rose-600",
   },
   {
     icon: FiMapPin,
     title: "Visit us",
-    description: "Come say hello at our office.",
+    description: "We are happy to hear from you.",
     value: "Dhaka, Bangladesh",
-    href: "https://www.google.com/maps/place/UCEP+Mirpur+Technical+School/@23.8008389,90.358305,20.92z/data=!4m15!1m8!3m7!1s0x3755c0e96fce29dd:0x6ccd9e51aba9e64d!2sMirpur-1,+Dhaka!3b1!8m2!3d23.7956037!4d90.3536548!16s%2Fg%2F11h051wl9!3m5!1s0x3755c0dd0304c56b:0x3cddf5da012b9cd2!8m2!3d23.8009814!4d90.3583948!16s%2Fg%2F11gbksvw28?entry=ttu&g_ep=EgoyMDI2MTAxMy4wIKXMDSoASAFQAw%3D%3D",
-    color: "bg-emerald-50 text-emerald-600",
+    href: "https://www.google.com/maps/place/Dhaka",
+    iconStyle: "bg-orange-50 text-orange-600",
   },
 ];
 
 function Contact() {
-  const handleSubmit = (event) => {
+  const [isSending, setIsSending] = useState(false);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const subject = formData.get("subject");
-    const message = formData.get("message");
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const name = formData.get("name")?.toString().trim();
+    const email = formData.get("email")?.toString().trim();
+    const subject = formData.get("subject")?.toString().trim();
+    const message = formData.get("message")?.toString().trim();
 
     if (!name || !email || !subject || !message) {
       toast.error("Please fill in all fields.");
       return;
     }
 
-    toast.success(
-      "Form validated! Connect an email service to send your message.",
-    );
-    event.currentTarget.reset();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (
+      EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
+      EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID" ||
+      EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY"
+    ) {
+      toast.error("Please configure your EmailJS credentials first.");
+      return;
+    }
+
+    try {
+      setIsSending(true);
+
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        form,
+        {
+          publicKey: EMAILJS_PUBLIC_KEY,
+        }
+      );
+
+      toast.success("Your message has been sent successfully!");
+      form.reset();
+    } catch (error) {
+      console.error("Contact form error:", error);
+      toast.error("Message could not be sent. Please try again.");
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
     <section className="min-h-screen bg-slate-50/70 pb-16">
-      <Toaster position="top-right" />
       <PageBreadcrumb title="Contact Us" />
 
-      <div className="mx-auto max-w-360 px-4 pt-8 sm:px-6 md:pt-12 lg:px-8">
-        <div className="relative isolate overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 sm:px-10 md:py-16 lg:px-16">
-          <div className="absolute -right-20 -top-24 -z-10 h-80 w-80 rounded-full bg-blue-600/30 blur-3xl" />
-          <div className="absolute -bottom-32 left-1/3 -z-10 h-72 w-72 rounded-full bg-violet-600/20 blur-3xl" />
+      <div className="mx-auto max-w-[1440px] px-4 pt-8 sm:px-6 md:pt-12 lg:px-8">
+        {/* Hero section */}
+        <div className="relative isolate overflow-hidden rounded-3xl bg-slate-950 px-6 py-12 shadow-xl sm:px-10 md:py-16 lg:px-16">
+          <div className="pointer-events-none absolute -right-20 -top-24 -z-10 h-80 w-80 rounded-full bg-red-600/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 left-1/3 -z-10 h-72 w-72 rounded-full bg-rose-600/20 blur-3xl" />
 
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            {/* Hero content */}
             <div>
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-semibold tracking-wide text-blue-200">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-2 text-xs font-semibold tracking-wide text-red-200">
                 <FiMessageCircle className="text-sm" />
                 WE'D LOVE TO HEAR FROM YOU
               </div>
 
               <h1 className="max-w-2xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
                 Let's start a
-                <span className="block bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-red-400 to-rose-300 bg-clip-text text-transparent">
                   conversation.
                 </span>
               </h1>
 
               <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-                Have a question about your order, need help choosing a product,
-                or just want to say hello? Send us a message. We're always happy
-                to help.
+                Have a question about your order, need help choosing a
+                product, or just want to say hello? Send us a message.
+                We're always happy to help.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <div className="flex -space-x-2">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-slate-950 bg-blue-500 text-xs font-bold text-white">
-                    S
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-950 bg-red-500 text-sm font-bold text-white">
+                    Y
                   </div>
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-slate-950 bg-violet-500 text-xs font-bold text-white">
-                    H
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-950 bg-rose-500 text-sm font-bold text-white">
+                    U
                   </div>
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-slate-950 bg-emerald-500 text-xs font-bold text-white">
-                    T
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-950 bg-orange-500 text-sm font-bold text-white">
+                    M
                   </div>
                 </div>
 
@@ -108,237 +152,246 @@ function Contact() {
                   <p className="text-sm font-semibold text-white">
                     We're here for you
                   </p>
-                  <p className="mt-0.5 text-xs text-slate-400">
-                    Customer support that cares.
+                  <p className="mt-1 text-xs text-slate-400">
+                    Your satisfaction matters to us.
                   </p>
                 </div>
               </div>
-            </div>
 
-            <div className="relative hidden min-h-64 items-center justify-center lg:flex">
-              <div className="absolute h-64 w-64 rounded-full border border-white/10" />
-              <div className="absolute h-48 w-48 rounded-full border border-white/10" />
-
-              <div className="relative flex h-36 w-36 items-center justify-center rounded-[2rem] border border-white/20 bg-gradient-to-br from-blue-500 to-violet-600 text-6xl text-white shadow-2xl shadow-blue-500/30">
-                <FiHeadphones />
-              </div>
-
-              <div className="absolute right-4 top-8 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 shadow-xl backdrop-blur-xl">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-400/20 text-xl text-emerald-300">
-                  <FiMessageCircle />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    Quick response
-                  </p>
-                  <p className="mt-1 text-xs text-slate-300">We're listening</p>
-                </div>
-              </div>
-
-              <div className="absolute bottom-4 left-0 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 p-4 shadow-xl backdrop-blur-xl">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-400/20 text-xl text-blue-300">
-                  <FiMail />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    Your message matters
-                  </p>
-                  <p className="mt-1 text-xs text-slate-300">
-                    Every question counts
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {contactInfo.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <a
-                key={item.title}
-                href={item.href}
-                target={item.title === "Visit us" ? "_blank" : undefined}
-                rel={item.title === "Visit us" ? "noreferrer" : undefined}
-                className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg hover:shadow-slate-200/60 sm:p-6"
-              >
-                <div className="flex items-start justify-between">
-                  <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-2xl text-xl ${item.color}`}
-                  >
-                    <Icon />
+              <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/15 text-red-300">
+                    <FiHeadphones size={20} />
                   </div>
-
-                  <FiArrowUpRight className="text-xl text-slate-300 transition-colors group-hover:text-blue-600" />
+                  <h3 className="font-semibold text-white">
+                    Customer Support
+                  </h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-400">
+                    We're ready to help with your questions.
+                  </p>
                 </div>
 
-                <h2 className="mt-5 text-lg font-bold text-slate-900">
-                  {item.title}
+                <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/15 text-rose-300">
+                    <FiClock size={20} />
+                  </div>
+                  <h3 className="font-semibold text-white">
+                    Quick Response
+                  </h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-400">
+                    Send us your message and we'll get back to you.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact form */}
+            <div className="rounded-3xl border border-white/60 bg-white p-5 shadow-2xl shadow-black/20 sm:p-8 lg:p-9">
+              <div className="mb-7">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-600">
+                  <FiSend size={22} />
+                </div>
+
+                <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+                  Send us a message
                 </h2>
 
-                <p className="mt-1 text-sm text-slate-500">
-                  {item.description}
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  Fill out the form below. We'll get back to you as soon
+                  as possible.
                 </p>
-
-                <p className="mt-4 break-words text-sm font-semibold text-blue-600">
-                  {item.value}
-                </p>
-              </a>
-            );
-          })}
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:gap-8">
-          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 md:p-10">
-            <div className="mb-8">
-              <span className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">
-                CONTACT FORM
-              </span>
-
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-                Send us a message
-              </h2>
-
-              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-                Fill out the form below and tell us how we can help. Please use
-                your correct email address.
-              </p>
-            </div>
-
-            <Form
-              className="flex w-full flex-col gap-5"
-              onSubmit={handleSubmit}
-            >
-              <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
-                <Input
-                  isRequired
-                  name="name"
-                  label="Full name"
-                  labelPlacement="outside"
-                  placeholder="Enter your full name"
-                  type="text"
-                  variant="bordered"
-                  radius="lg"
-                />
-
-                <Input
-                  isRequired
-                  name="email"
-                  label="Email address"
-                  labelPlacement="outside"
-                  placeholder="you@example.com"
-                  type="email"
-                  variant="bordered"
-                  radius="lg"
-                />
               </div>
 
-              <Input
-                isRequired
-                name="subject"
-                label="Subject"
-                labelPlacement="outside"
-                placeholder="What can we help you with?"
-                type="text"
-                variant="bordered"
-                radius="lg"
-              />
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-5"
+              >
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <Input
+                    name="name"
+                    label="Full name"
+                    placeholder="Enter your name"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="lg"
+                    isRequired
+                    maxLength={100}
+                    classNames={{
+                      label: "font-medium text-slate-700",
+                      inputWrapper:
+                        "border-slate-200 bg-slate-50 hover:bg-white group-data-[focus=true]:border-red-500 shadow-none",
+                    }}
+                  />
 
-              <Textarea
-                isRequired
-                name="message"
-                label="Your message"
-                labelPlacement="outside"
-                placeholder="Write your message here..."
-                minRows={5}
-                variant="bordered"
-                radius="lg"
-              />
+                  <Input
+                    name="email"
+                    type="email"
+                    label="Email address"
+                    placeholder="you@example.com"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="lg"
+                    isRequired
+                    maxLength={254}
+                    classNames={{
+                      label: "font-medium text-slate-700",
+                      inputWrapper:
+                        "border-slate-200 bg-slate-50 hover:bg-white group-data-[focus=true]:border-red-500 shadow-none",
+                    }}
+                  />
+                </div>
 
-              <div className="flex w-full flex-col justify-between gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center">
-                <p className="max-w-xs text-xs leading-5 text-slate-400">
-                  By submitting this form, you agree to be contacted regarding
-                  your inquiry.
-                </p>
+                <Input
+                  name="subject"
+                  label="Subject"
+                  placeholder="What can we help you with?"
+                  labelPlacement="outside"
+                  variant="bordered"
+                  radius="lg"
+                  isRequired
+                  maxLength={150}
+                  classNames={{
+                    label: "font-medium text-slate-700",
+                    inputWrapper:
+                      "border-slate-200 bg-slate-50 hover:bg-white group-data-[focus=true]:border-red-500 shadow-none",
+                  }}
+                />
+
+                <Textarea
+                  name="message"
+                  label="Your message"
+                  placeholder="Write your message here..."
+                  labelPlacement="outside"
+                  variant="bordered"
+                  radius="lg"
+                  minRows={5}
+                  maxRows={8}
+                  isRequired
+                  maxLength={3000}
+                  classNames={{
+                    label: "font-medium text-slate-700",
+                    inputWrapper:
+                      "border-slate-200 bg-slate-50 hover:bg-white group-data-[focus=true]:border-red-500 shadow-none",
+                  }}
+                />
 
                 <Button
                   type="submit"
-                  className="h-12 w-full rounded-xl bg-blue-600 px-7 font-semibold text-white shadow-lg shadow-blue-600/20 transition-all hover:bg-blue-700 sm:w-auto"
-                  endContent={<FiSend />}
+                  isDisabled={isSending}
+                  className="mt-1 h-12 w-full rounded-xl bg-red-600 text-base font-semibold text-white shadow-lg shadow-red-600/20 transition-all hover:bg-red-700 hover:shadow-red-600/30 disabled:cursor-not-allowed disabled:opacity-60"
+                  endContent={
+                    isSending ? null : <FiArrowUpRight size={19} />
+                  }
                 >
-                  Send message
+                  {isSending ? "Sending message..." : "Send Message"}
                 </Button>
-              </div>
-            </Form>
-          </div>
 
-          <div className="space-y-5">
-            <div className="rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 p-6 text-white shadow-xl shadow-blue-600/15 sm:p-7">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/20 bg-white/15 text-2xl">
-                <FiHeadphones />
-              </div>
-
-              <h3 className="mt-6 text-xl font-bold">Need a little help?</h3>
-
-              <p className="mt-3 text-sm leading-6 text-blue-100">
-                Whether it's an order update, product question, or something
-                else, we're happy to point you in the right direction.
-              </p>
-
-              <a
-                href="mailto:support@example.com"
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-bold text-blue-700 transition-colors hover:bg-blue-50"
-              >
-                Contact support
-                <FiArrowUpRight className="text-base" />
-              </a>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-xl text-amber-600">
-                <FiClock />
-              </div>
-
-              <h3 className="mt-4 text-lg font-bold text-slate-900">
-                Business hours
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                We're available during our regular support hours.
-              </p>
-
-              <div className="mt-5 space-y-3 border-t border-slate-100 pt-4 text-sm">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-slate-500">Saturday – Thursday</span>
-                  <span className="font-semibold text-slate-800">
-                    9 AM – 6 PM
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-slate-500">Friday</span>
-                  <span className="font-semibold text-slate-800">Closed</span>
-                </div>
-              </div>
-
-              <p className="mt-4 text-xs leading-5 text-slate-400">
-                Business hours shown are sample details. Update them to match
-                your actual support schedule.
-              </p>
+                <p className="flex items-center justify-center gap-2 text-center text-xs text-slate-500">
+                  <FiCheckCircle className="shrink-0 text-red-500" />
+                  Your information is used to respond to your inquiry.
+                </p>
+              </form>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-6 text-center sm:flex-row sm:gap-3">
-          <FiMessageCircle className="text-xl text-blue-600" />
-          <p className="text-sm text-slate-500">
-            Still have questions? We're just a message away.
-            <span className="ml-1 font-semibold text-slate-800">
-              We'd love to help.
-            </span>
-          </p>
+        {/* Contact information */}
+        <div className="mt-12">
+          <div className="mb-7 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">
+              GET IN TOUCH
+            </p>
+
+            <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              We'd love to hear from you
+            </h2>
+
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+              Choose the best way to reach us. We're happy to help.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {contactInfo.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <a
+                  key={item.title}
+                  href={item.href}
+                  target={
+                    item.title === "Visit us" ? "_blank" : undefined
+                  }
+                  rel={
+                    item.title === "Visit us"
+                      ? "noreferrer"
+                      : undefined
+                  }
+                  className="group rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-200 hover:shadow-xl hover:shadow-red-950/5"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-2xl ${item.iconStyle} transition-transform duration-300 group-hover:scale-110`}
+                    >
+                      <Icon size={22} />
+                    </div>
+
+                    <FiArrowUpRight
+                      className="text-slate-400 transition-colors group-hover:text-red-600"
+                      size={20}
+                    />
+                  </div>
+
+                  <h3 className="mt-5 text-lg font-bold text-slate-900">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    {item.description}
+                  </p>
+
+                  <p className="mt-4 break-words text-sm font-semibold text-red-600">
+                    {item.value}
+                  </p>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom support banner */}
+        <div className="mt-8 flex flex-col gap-5 rounded-2xl border border-red-100 bg-gradient-to-r from-red-50 via-white to-rose-50 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-100 text-red-600">
+              <FiMessageCircle size={23} />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-slate-900">
+                Still have questions?
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-slate-600">
+                Send us a message using the contact form above.
+              </p>
+            </div>
+          </div>
+
+          <a
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              document
+                .querySelector('input[name="name"]')
+                ?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+            }}
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-red-600/20 transition hover:bg-red-700"
+          >
+            Contact Support
+            <FiArrowUpRight size={18} />
+          </a>
         </div>
       </div>
     </section>

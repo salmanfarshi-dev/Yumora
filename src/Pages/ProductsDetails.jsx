@@ -22,11 +22,7 @@ function ProductsDetails() {
         <div className="flex flex-col md:flex-row justify-between gap-2 md:gap-3">
           <div className="md:w-[50%]">
             <div className="md:w-117.5 md:h-117.5 bg-bg rounded flex justify-center items-center border border-border1">
-              <img
-                src="/public/→ product-1-1.jpg.png"
-                alt=""
-                className="md:w-70"
-              />
+              <img src="/→ product-1-1.jpg.png" alt="" className="md:w-70" />
             </div>
             <div className="flex items-center gap-x-2 md:gap-x-4 mt-2 md:mt-4 ">
               <div className="w-20 h-20 bg-bg rounded  flex justify-center items-center border border-border1">
@@ -259,7 +255,7 @@ function ProductsDetails() {
         <div className="mt-5 md:mt-10 lg:mt-16 flex justify-between flex-wrap">
           {data.slice(5, 10).map((items) => (
             <ProductCard
-               className="w-full sm:w-[calc(50%-8px)] md:w-[calc(33.33%-14px)] lg:w-[calc(20%-20px)]"
+              className="w-full sm:w-[calc(50%-8px)] md:w-[calc(33.33%-14px)] lg:w-[calc(20%-20px)]"
               thumbnail={items.thumbnail}
               title={items.title}
               des={items.description}

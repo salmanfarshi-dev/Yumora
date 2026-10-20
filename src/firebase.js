@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "yumora-1924f.firebasestorage.app",
   messagingSenderId: "941292655864",
   appId: "1:941292655864:web:45c14dd7f3e12f42a1570d",
-  measurementId: "G-JB785EWQV2"
+  measurementId: "G-JB785EWQV2",
 };
 const app = initializeApp(firebaseConfig);
 

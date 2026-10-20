@@ -115,7 +115,7 @@ function Account() {
   return (
     <section className="min-h-[80vh] bg-slate-50 py-10 md:py-16 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-3xl overflow-hidden shadow-xl shadow-slate-200/70 border border-slate-100">
-        <div className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-red-950 to-red-700 p-7 md:p-12 lg:p-14 text-white flex flex-col justify-between min-h-[300px] lg:min-h-[700px]">
+        <div className="relative overflow-hidden bg-linear-to-br from-slate-950 via-red-950 to-red-700 p-7 md:p-12 lg:p-14 text-white flex flex-col justify-between min-h-75 lg:min-h-175">
           <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-red-500/20 blur-3xl" />
 
           <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-rose-600/20 blur-3xl" />
@@ -307,7 +307,7 @@ function Account() {
                 type="submit"
                 isLoading={loading}
                 isDisabled={loading}
-                className="w-full h-12 bg-gradient-to-r from-red-600 to-rose-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-red-200 hover:from-red-700 hover:to-rose-600 transition-all duration-300"
+                className="w-full h-12 bg-linear-to-r from-red-600 to-rose-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-red-200 hover:from-red-700 hover:to-rose-600 transition-all duration-300"
               >
                 {loading ? "Creating Account..." : "Create Account"}
                 {!loading && <FiArrowRight className="text-lg" />}
