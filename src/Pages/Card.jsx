@@ -116,7 +116,7 @@ function Card() {
                           dispatch(toggleWishlist(item));
 
                           if (isWishlisted) {
-                            toast.success("Removed from wishlist!");
+                            toast.error("Removed from wishlist!");
                           } else {
                             toast.success("Added to wishlist!");
                           }

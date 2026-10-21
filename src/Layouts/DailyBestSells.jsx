@@ -7,6 +7,7 @@ import { Navigation } from "swiper/modules";
 import ProductCard from "../Components/ProductCard";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
+import { Link } from "react-router";
 
 function DailyBestSells() {
   let [data, setData] = useState([]);
@@ -26,11 +27,13 @@ function DailyBestSells() {
           <div className="grid grid-cols-12 gap-5 md:gap-3 lg:gap-4">
             <div className="col-span-12 md:col-span-3">
              <div className="flex justify-center items-center">
+              <Link to="/productlist">
                <img
                 src="/bestseller.png"
                 alt=""
                 className="w-fit h-80 md:h-112 object-cover rounded-xl"
-              />
+              /> 
+              </Link>
              </div>
             </div>
             <div className="col-span-12 md:col-span-9 relative">

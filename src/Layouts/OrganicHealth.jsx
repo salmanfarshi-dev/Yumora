@@ -1,5 +1,6 @@
 import { Button } from "@heroui/react";
 import React from "react";
+import { Link } from "react-router";
 
 function OrganicHealth() {
   return (
@@ -27,9 +28,11 @@ function OrganicHealth() {
                 Organic & Healthy Vegetables
               </p>
 
+             <Link to="/productlist">
               <Button className="rounded bg-primary text-white text-xs md:text-sm w-fit">
                 Shop Now
               </Button>
+              </Link>
             </div>
           </div>
 
@@ -54,9 +57,11 @@ function OrganicHealth() {
                 Organic & Healthy Pizza
               </p>
 
+               <Link to="/productlist">
               <Button className="rounded bg-primary text-white text-xs md:text-sm w-fit">
                 Shop Now
               </Button>
+              </Link>
             </div>
           </div>
 
@@ -78,9 +83,11 @@ function OrganicHealth() {
                 Organic & Healthy Vegetables
               </p>
 
+                <Link to="/productlist">
               <Button className="rounded bg-primary text-white text-xs md:text-sm w-fit">
                 Shop Now
               </Button>
+              </Link>
             </div>
           </div>
         </div>

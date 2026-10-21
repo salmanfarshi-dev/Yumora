@@ -8,7 +8,7 @@ import DealsOfTheDay from "../Layouts/DealsOfTheDay";
 import WhyChoose from "../Layouts/WhyChoose";
 import OrganicHealth from "../Layouts/OrganicHealth";
 import OfferSection from "../Layouts/OfferSection";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const shopping = ["/shoping (1).png", "/shoping (2).png", "/shoping (3).png"];
 function Home() {
@@ -29,9 +29,12 @@ function Home() {
      banner section start
      ================= */}
 
+      <Link to="/productlist">
       <div className="w-full md:h-[80vh]">
         <img src="/banner.png" alt="" className="w-full h-full object-cover" />
       </div>
+      
+      </Link>
       {/* ============= 
      banner section end
      ================= */}
