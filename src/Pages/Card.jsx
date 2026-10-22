@@ -100,7 +100,7 @@ function Card() {
 
                     <div className="flex items-center gap-3 md:gap-7">
                       <div
-                        className="bg-transparent text-xl text-secondary"
+                        className="bg-transparent text-xl text-secondary cursor-pointer"
                         onClick={() => dispatch(deletecart(item))}
                       >
                         <RiDeleteBin6Fill />
