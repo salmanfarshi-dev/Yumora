@@ -122,9 +122,9 @@ function Login() {
             <div className="max-w-md w-full mx-auto">
               <div className="flex justify-center items-center mb-6">
                 <img
-                  src="/registrationlogo.png"
+                  src="/logo (2).png"
                   alt="Yumora"
-                  className="max-w-full object-contain"
+                  className="w-30 object-contain"
                 />
               </div>
 
