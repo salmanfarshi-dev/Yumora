@@ -66,7 +66,7 @@ function Footer() {
       <div className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12">
         <div className="grid grid-cols-12 max-w-fit  mx-auto gap-7 md:gap-10 lg:gap-15">
           <div className="col-span-12 md:col-span-3">
-            <img src="/logo.png" alt="logo" />
+            <img src="/logo (2).png" alt="logo" className="w-20"/>
             <p className="text-sm text-footer-color leading-6 tracking-[0.48px] md:w-80">
               FoodTrove is the biggest market of grocery products. Get your
               daily needs from our store.

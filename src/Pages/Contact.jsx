@@ -25,7 +25,7 @@ const contactInfo = [
     icon: FiMail,
     title: "Email us",
     description: "Our team is here to help.",
-    value: "support@example.com",
+    value: "salmanfarshidevel@gmail.com.com",
     href: "mailto:support@example.com",
     iconStyle: "bg-red-50 text-red-600",
   },

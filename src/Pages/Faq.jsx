@@ -27,7 +27,13 @@ function Faq() {
                   content: "",
                 }}
               >
-                {defaultContent}
+                <p>
+                  Our hotel offers many modern facilities for guests. We have
+                  comfortable rooms, free Wi-Fi, a swimming pool, and a
+                  restaurant. We also provide free parking and room service. Our
+                  friendly staff are always ready to help guests. We try our
+                  best to make every guest's stay comfortable and enjoyable.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="2"
@@ -38,7 +44,14 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  You can book a room through our official website or by calling
+                  our hotel. First, choose your preferred room and check the
+                  available dates. Then, provide the necessary information for
+                  booking. You can also contact our reception for help. After
+                  confirming your booking, you will receive a confirmation
+                  message.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="3"
@@ -49,7 +62,13 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  Our hotel is special because we provide excellent service to
+                  our guests. We offer comfortable rooms at affordable prices.
+                  Our restaurant serves delicious and fresh food. We always
+                  maintain a clean and peaceful environment. Our friendly staff
+                  work hard to make every guest happy.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="4"
@@ -60,7 +79,13 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  Yes, our hotel has a modern fitness center for guests. It has
+                  different exercise machines and necessary equipment. Guests
+                  can exercise and stay healthy during their vacation. The
+                  fitness center provides a comfortable environment for
+                  workouts. Our staff are always available to assist guests.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="5"
@@ -71,7 +96,13 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  We offer different types of room services for our guests.
+                  These include food delivery, room cleaning, and laundry
+                  services. We also provide 24-hour room service for their
+                  convenience. Our staff respond quickly to guests' requests. We
+                  always try to make our guests feel comfortable and satisfied.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="6"
@@ -82,7 +113,13 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  Our hotel provides many facilities for a comfortable stay. We
+                  have air-conditioned rooms, free Wi-Fi, and free parking.
+                  Guests can enjoy delicious food in our restaurant. We also
+                  offer friendly customer service and room cleaning. Our main
+                  goal is to provide a pleasant experience for every guest.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="7"
@@ -93,7 +130,14 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  Our hotel offers several facilities to make guests' vacations
+                  enjoyable. We have a beautiful garden, a swimming pool, and a
+                  fitness center. Our rooms are clean, spacious, and
+                  comfortable. Guests can also enjoy delicious meals at our
+                  restaurant. We always try to provide the best service to our
+                  guests.
+                </p>
               </AccordionItem>
               <AccordionItem
                 key="8"
@@ -104,7 +148,14 @@ function Faq() {
                   title: "text-sm md:text-[16px] font-semibold",
                 }}
               >
-                {defaultContent}
+                <p>
+                  Booking a room at our hotel is very simple. You can visit our
+                  official website or contact us by phone. Choose your preferred
+                  room and select your check-in and check-out dates. Then,
+                  provide your personal information and confirm your booking.
+                  You will receive a confirmation message after completing the
+                  process.
+                </p>
               </AccordionItem>
             </Accordion>
           </div>
