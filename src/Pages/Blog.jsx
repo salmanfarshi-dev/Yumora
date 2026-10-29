@@ -37,80 +37,176 @@ const posts = [
   },
 ];
 
+function BlogSkeleton() {
+  return (
+    <div className="animate-pulse">
+      <div className="h-56 sm:h-80 md:h-125 w-full rounded-xl bg-gray-200" />
+
+      <div className="mt-5 h-3 w-52 rounded bg-gray-200" />
+
+      <div className="mt-4 h-8 sm:h-10 w-4/5 rounded bg-gray-200" />
+
+      <div className="mt-5 space-y-3">
+        <div className="h-3 w-full rounded bg-gray-200" />
+        <div className="h-3 w-full rounded bg-gray-200" />
+        <div className="h-3 w-3/4 rounded bg-gray-200" />
+      </div>
+
+      <div className="mt-6 grid grid-cols-2 gap-3 md:gap-5">
+        <div className="h-36 sm:h-52 rounded-xl bg-gray-200" />
+        <div className="h-36 sm:h-52 rounded-xl bg-gray-200" />
+      </div>
+
+      <div className="mt-6 space-y-3">
+        <div className="h-3 w-full rounded bg-gray-200" />
+        <div className="h-3 w-5/6 rounded bg-gray-200" />
+      </div>
+    </div>
+  );
+}
+
 function Blog() {
   const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [loadedImages, setLoadedImages] = useState({});
 
-  const goTo = (i) => setCurrent((i + posts.length) % posts.length);
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const goTo = (i) => {
+    setCurrent((i + posts.length) % posts.length);
+  };
+
+  const handleImageLoad = (key) => {
+    setLoadedImages((prev) => ({
+      ...prev,
+      [key]: true,
+    }));
+  };
 
   return (
-    <div className="">
+    <div>
       <PageBreadcrumb title="Blog" />
 
       <main className="max-w-360 mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12">
-        <div className="overflow-hidden rounded-xl">
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${current * 100}%)` }}
-          >
-            {posts.map((p, i) => (
-              <article key={i} className="w-full flex-shrink-0 px-1">
-                <div className="overflow-hidden mb-6 bg-white flex text-center justify-center items-center mx-auto">
-                  <img
-                    src={p.image}
-                    alt=""
-                    className="w-full md:h-125 object-cover"
-                  />
-                </div>
-                <div className="text-xs mb-2 text-green-800">
-                  By {p.author} &nbsp;·&nbsp; {p.date} &nbsp;·&nbsp;{" "}
-                  {p.comments} comments
-                </div>
-                <h1 className="font-serif text-3xl sm:text-4xl mb-4 leading-tight text-stone-900">
-                  {p.title}
-                </h1>
-                <p className="mb-4 leading-relaxed text-stone-700">{p.body}</p>
-
-                <div className="flex gap-2 md:gap-4 lg:gap-8 mt-2 md:mt-5 mb-2 md:mb-5">
-                  <img src={p.image2} alt="" className="w-[50%] object-cover" />
-                  <img src={p.image3} alt="" className="w-[50%] object-cover" />
-                </div>
-                <p className="leading-relaxed text-stone-700">{p.body2}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-2 md:gap-5 mt-7 pt-5 border-t border-[#e3dcc8] mb-4 md:mb-8 lg:mb-14">
-          <button
-            onClick={() => goTo(current - 1)}
-            className="text-sm px-3 py-1.5 rounded-full border border-[#e3dcc8] hover:border-primary transition-colors"
-          >
-            ‹ Previous
-          </button>
-
-          <div className="flex items-center gap-2">
-            {posts.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`w-8 h-8 rounded-full text-sm border transition-colors ${
-                  i === current
-                    ? "bg-primary border-primary text-white"
-                    : "border-[#e3dcc8] text-stone-800 hover:border-primary"
-                }`}
+        {loading ? (
+          <BlogSkeleton />
+        ) : (
+          <>
+            <div className="overflow-hidden rounded-xl">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{
+                  transform: `translateX(-${current * 100}%)`,
+                }}
               >
-                {i + 1}
-              </button>
-            ))}
-          </div>
+                {posts.map((p, i) => (
+                  <article
+                    key={i}
+                    className="w-full flex-shrink-0 px-1 animate-[fadeIn_0.4s_ease-out_both]"
+                  >
+                    <div className="relative mb-6 flex items-center justify-center overflow-hidden bg-white">
+                      {!loadedImages[`main-${i}`] && (
+                        <div className="absolute inset-0 animate-pulse bg-gray-200" />
+                      )}
 
-          <button
-            onClick={() => goTo(current + 1)}
-            className="text-sm px-3 py-1.5 rounded-full border border-[#e3dcc8] hover:border-primary transition-colors"
-          >
-            Next ›
-          </button>
-        </div>
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        onLoad={() => handleImageLoad(`main-${i}`)}
+                        className={`w-full h-56 sm:h-80 md:h-125 object-cover transition-opacity duration-500 ${
+                          loadedImages[`main-${i}`]
+                            ? "opacity-100"
+                            : "opacity-0"
+                        }`}
+                      />
+                    </div>
+
+                    <div className="text-xs mb-2 text-green-800">
+                      By {p.author} &nbsp;·&nbsp; {p.date} &nbsp;·&nbsp;{" "}
+                      {p.comments} comments
+                    </div>
+
+                    <h1 className="font-serif text-3xl sm:text-4xl mb-4 leading-tight text-stone-900">
+                      {p.title}
+                    </h1>
+
+                    <p className="mb-4 leading-relaxed text-stone-700">
+                      {p.body}
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-2 md:gap-4 lg:gap-8 mt-2 md:mt-5 mb-2 md:mb-5">
+                      {[p.image2, p.image3].map((src, index) => {
+                        const key = `extra-${i}-${index}`;
+
+                        return (
+                          <div
+                            key={key}
+                            className="relative min-w-0 overflow-hidden bg-gray-100"
+                          >
+                            {!loadedImages[key] && (
+                              <div className="absolute inset-0 animate-pulse bg-gray-200" />
+                            )}
+
+                            <img
+                              src={src}
+                              alt={`${p.title} ${index + 1}`}
+                              onLoad={() => handleImageLoad(key)}
+                              className={`w-full h-36 sm:h-52 object-cover transition-opacity duration-500 ${
+                                loadedImages[key] ? "opacity-100" : "opacity-0"
+                              }`}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <p className="leading-relaxed text-stone-700">{p.body2}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-2 md:gap-5 mt-7 pt-5 border-t border-[#e3dcc8] mb-4 md:mb-8 lg:mb-14">
+              <button
+                onClick={() => goTo(current - 1)}
+                className="text-sm px-3 py-1.5 rounded-full border border-[#e3dcc8] hover:border-primary transition-colors"
+              >
+                ‹ Previous
+              </button>
+
+              <div className="flex items-center gap-2">
+                {posts.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    aria-label={`Go to blog post ${i + 1}`}
+                    aria-current={i === current ? "page" : undefined}
+                    className={`w-8 h-8 rounded-full text-sm border transition-colors ${
+                      i === current
+                        ? "bg-primary border-primary text-white"
+                        : "border-[#e3dcc8] text-stone-800 hover:border-primary"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => goTo(current + 1)}
+                className="text-sm px-3 py-1.5 rounded-full border border-[#e3dcc8] hover:border-primary transition-colors"
+              >
+                Next ›
+              </button>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

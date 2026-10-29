@@ -1,6 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import SideHeading from "../Components/SideHeading";
+import ProductSkeleton from "../Components/ProductSkeleton";
 import { Button } from "@heroui/react";
 import { FaStar } from "react-icons/fa6";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -9,32 +9,38 @@ import { CardSlice } from "../Slices/addtocartSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { RotatingLines } from "react-loader-spinner";
 
-
 function DealsOfTheDay() {
   const [loader, setLoader] = useState(false);
   const [data, setData] = useState([]);
   const [show, setShow] = useState(4);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const dispatch = useDispatch();
 
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(false);
+
+    try {
+      const res = await fetch("https://dummyjson.com/products");
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch products");
+      }
+
+      const result = await res.json();
+      setData(result.products || []);
+    } catch (err) {
+      setError(true);
+      toast.error("Products load failed!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        return res.json();
-      })
-      .then((result) => {
-        setData(result.products || []);
-      })
-      .catch(() => {
-        toast.error("Products load failed!");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    fetchProducts();
   }, []);
 
   const handleAddToCart = (items) => {
@@ -64,6 +70,15 @@ function DealsOfTheDay() {
     });
   };
 
+  const handleShowAll = () => {
+    setLoader(true);
+
+    setTimeout(() => {
+      setShow(data.length);
+      setLoader(false);
+    }, 500);
+  };
+
   return (
     <section className="max-w-360 w-full mx-auto px-4 md:px-6 lg:px-0 mt-4 md:mt-7 lg:mt-12 mb-70">
       <Toaster
@@ -86,57 +101,70 @@ function DealsOfTheDay() {
         }}
       />
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-3">
         <SideHeading tittle="Deals Of The Day" />
 
-        {show < data.length && (
+        {!loading && !error && show < data.length && (
           <Button
-                onClick={() => {
-                  setLoader(true);
-
-                  setTimeout(() => {
-                    setShow(data.length);
-                    setLoader(false);
-                  }, 500);
-                }}
-                className="bg-primary text-white text-xl font-medium rounded"
-              >
-                {loader ? (
-                  <RotatingLines
-                    visible={true}
-                    height="25"
-                    width="25"
-                    color="#22d3ee"
-                    strokeWidth="5"
-                    animationDuration="0.75"
-                    ariaLabel="rotating-lines-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                  />
-                ) : (
-                  " All Deals"
-                )}
-              </Button>
+            onPress={handleShowAll}
+            className="bg-primary text-white text-sm md:text-xl font-medium rounded shrink-0"
+          >
+            {loader ? (
+              <RotatingLines
+                visible={true}
+                height="25"
+                width="25"
+                color="#22d3ee"
+                strokeWidth="5"
+                animationDuration="0.75"
+                ariaLabel="rotating-lines-loading"
+              />
+            ) : (
+              "All Deals"
+            )}
+          </Button>
         )}
       </div>
 
       <div className="mt-5 md:mt-8 lg:mt-12">
         {loading ? (
-          <div className="flex justify-center items-center py-16">
-            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 md:gap-x-5 gap-y-28 md:gap-y-32">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <div key={index} className="animate-[fadeIn_0.4s_ease-out_both]">
+                <ProductSkeleton />
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="flex flex-col justify-center items-center py-12 gap-4">
+            <p className="text-secondary2 text-center">
+              Products load failed. Please check your internet connection.
+            </p>
+
+            <Button
+              onPress={fetchProducts}
+              className="bg-primary text-white rounded-lg px-6"
+            >
+              Try Again
+            </Button>
           </div>
         ) : data.length === 0 ? (
           <p className="text-center text-secondary2 py-10">
             No products available right now.
           </p>
         ) : (
-          <div className="flex flex-wrap justify-between gap-x-1  gap-y-60">
+          <div className="flex flex-wrap justify-between gap-x-1 gap-y-60">
             {data.slice(0, show).map((items) => (
               <div
                 key={items.id}
-                className="bg-bg rounded-xl md:w-85 w-39 h-auto flex justify-center items-center relative md:hover:-translate-y-3 duration-300 "
+                className="bg-bg rounded-xl md:w-85 w-39 h-auto flex justify-center items-center relative md:hover:-translate-y-3 duration-300 animate-[fadeIn_0.4s_ease-out_both]"
               >
-                <img src={items.thumbnail} alt={items.title} className="w-30 h-30 md:w-50 md:h-50 object-cover" />
+                <img
+                  src={items.thumbnail}
+                  alt={items.title}
+                  loading="lazy"
+                  className="w-30 h-30 md:w-50 md:h-50 object-cover"
+                />
 
                 <div className="absolute w-[90%] mt-80 md:mt-90 bg-white px-2 md:px-4 lg:px-5 py-2 md:py-3 lg:py-5 rounded-xl shadow">
                   <p className="text-xs font-lato font-normal text-secondary2 mt-2 md:mt-4 line-clamp-1">
@@ -167,8 +195,7 @@ function DealsOfTheDay() {
                   </div>
 
                   <p className="text-sm text-[#B6B6B6] font-lato mt-1 md:mb-3 lg:mb-6">
-                    By{" "}
-                    <span className="text-primary">{items.category}</span>
+                    By <span className="text-primary">{items.category}</span>
                   </p>
 
                   <div className="flex justify-between flex-col md:flex-row items-start md:items-center">
